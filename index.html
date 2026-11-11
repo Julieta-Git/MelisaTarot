@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Melisa Tarot · Cristales, aromas y rituales</title>
-  <meta name="description" content="Roll-ons con cristales, sprays áuricos, brumas, sales de baño, velas alquímicas y biosahumerios hechos a mano, con intención. Pedidos por WhatsApp.">
+  <title>Melisa Tarot · Tarot, cristales y rituales</title>
+  <meta name="description" content="Tiradas y lecturas de tarot, curso para aprender tarot y tienda holística: roll-ons con cristales, sprays áuricos, brumas, sales, velas y biosahumerios. Reservas y pedidos por WhatsApp.">
   <meta property="og:title" content="Melisa Tarot · Cristales, aromas y rituales">
   <meta property="og:description" content="Cristales, aromas y rituales hechos a mano, con intención.">
   <meta property="og:image" content="assets/logo-pantera.webp">
@@ -19,8 +19,8 @@
   <header class="top">
     <a class="marca" href="#inicio"><img src="assets/logo-pantera.webp" alt="" width="40" height="40"><span>Melisa Tarot</span></a>
     <nav class="menu" aria-label="Secciones">
-      <a href="#tienda">Tienda</a>
       <a href="#tiradas" data-tiradas>Tiradas</a>
+      <a href="#tienda">Tienda</a>
       <a href="#como-pedir">Cómo pedir</a>
     </nav>
   </header>
@@ -28,17 +28,31 @@
   <main id="inicio">
     <section class="hero">
       <div class="hero-texto">
-        <p class="etiqueta">✦ Hecho a mano, con intención</p>
-        <h1>Cristales, aromas <em>y rituales</em></h1>
-        <p class="bajada">Roll-ons con cristales, sprays áuricos, brumas, sales, velas alquímicas y biosahumerios para tus rituales de todos los días.</p>
+        <p class="etiqueta">✦ Tu tarotista de confianza</p>
+        <h1>Tarot, cristales <em>y rituales</em></h1>
+        <p class="bajada">Lecturas de tarot personalizadas y una tienda holística hecha a mano, con intención: roll-ons con cristales, sprays áuricos, brumas, sales, velas y biosahumerios.</p>
         <div class="acciones">
-          <a class="btn" href="#tienda">Ver la tienda</a>
-          <a class="btn btn-borde" href="#guia">¿Qué necesitás?</a>
+          <a class="btn" href="#tiradas">Ver tiradas</a>
+          <a class="btn btn-borde" href="#tienda">Ir a la tienda</a>
         </div>
       </div>
       <div class="hero-logo" aria-hidden="true">
         <img src="assets/logo-pantera.webp" alt="" width="420" height="420">
       </div>
+    </section>
+
+    <section id="tiradas" class="seccion tiradas" data-tiradas>
+      <div class="encabezado">
+        <p class="etiqueta">✦ Tarot</p>
+        <h2>Tiradas y lecturas</h2>
+        <p>Elegí tu lectura y reservala por WhatsApp.</p>
+      </div>
+      <div class="filtros filtros-oscuros" id="filtros-tiradas" role="group" aria-label="Filtrar lecturas"></div>
+      <div class="grilla-tiradas" id="grilla-tiradas"></div>
+    </section>
+
+    <section id="servicios" class="seccion servicios" data-tiradas>
+      <div class="grilla-servicios" id="grilla-servicios"></div>
     </section>
 
     <section id="guia" class="seccion guia">
@@ -60,20 +74,15 @@
       <div id="productos"></div>
     </section>
 
-    <section id="tiradas" class="seccion" data-tiradas>
-      <div class="encabezado"><p class="etiqueta">Tarot</p><h2>Tiradas</h2></div>
-      <div id="grilla-tiradas"></div>
-    </section>
-
     <section id="como-pedir" class="seccion como-pedir">
       <div class="encabezado">
         <p class="etiqueta">Pedí el tuyo conmigo</p>
         <h2>¿Llegaste hasta acá? Entonces ya tenés una favorita</h2>
       </div>
       <ol class="pasos">
-        <li><strong>Elegí tu producto</strong> y sumalo al pedido.</li>
+        <li><strong>Elegí tu lectura o tus productos.</strong> Las tiradas se reservan con su botón; los productos se suman al pedido.</li>
         <li><strong>Elegí tu aroma o color</strong> cuando el producto lo tenga.</li>
-        <li><strong>Escribime por WhatsApp</strong> y te confirmo la disponibilidad.</li>
+        <li><strong>Escribime por WhatsApp</strong> y te confirmo turno, disponibilidad y pago.</li>
       </ol>
       <p class="aviso" id="aviso-stock"></p>
     </section>

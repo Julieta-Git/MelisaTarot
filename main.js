@@ -28,9 +28,70 @@ document.getElementById("pie-contacto").innerHTML = [
 document.getElementById("aviso-stock").textContent = SITIO.aviso;
 document.getElementById("anio").textContent = new Date().getFullYear();
 
-// ---------- Tiradas (ocultas hasta tener datos) ----------
+// ---------- Tiradas ----------
+let filtroTiradas = "todas";
+// "1) texto 2) texto" -> intro + lista
+function textoConLista(t) {
+  const partes = t.split(/\s(?=\d{1,2}\)\s)/);
+  if (partes.length < 3) return `<p>${esc(t)}</p>`;
+  const [intro, ...items] = partes;
+  const ultimo = items[items.length - 1];
+  const m = ultimo.match(/^(.*?[.?])\s+([A-ZÁÉÍÓÚ¿].{20,})$/); // texto suelto después del último ítem
+  if (m) items[items.length - 1] = m[1];
+  return `<p>${esc(intro)}</p><details><summary>Ver qué incluye (${items.length})</summary><ol>${items.map((i) => `<li>${esc(i.replace(/^\d{1,2}\)\s/, ""))}</li>`).join("")}</ol></details>${m ? `<p>${esc(m[2])}</p>` : ""}`;
+}
+
+function renderTiradas() {
+  const cols = COLECCIONES_TIRADAS.filter((c) => TIRADAS.some((t) => t.coleccion === c.id));
+  document.getElementById("filtros-tiradas").innerHTML = [{ id: "todas", nombre: "Todas" }, ...cols]
+    .map((c) => `<button type="button" data-filtro-tirada="${c.id}" aria-pressed="${filtroTiradas === c.id}">${c.nombre}</button>`).join("");
+  const lista = TIRADAS.filter((t) => t.visible !== false && (filtroTiradas === "todas" || t.coleccion === filtroTiradas));
+  const largas = lista.filter((t) => !t.corta);
+  const cortas = lista.filter((t) => t.corta);
+  document.getElementById("grilla-tiradas").innerHTML =
+    largas.map((t) => `
+      <article class="tirada${t.destacada ? " destacada" : ""}" id="tirada-${t.id}">
+        <p class="tirada-col">${COLECCIONES_TIRADAS.find((c) => c.id === t.coleccion).nombre}</p>
+        <h3>${esc(t.nombre)}</h3>
+        ${t.detalle ? `<p class="tirada-detalle">${esc(t.detalle)}</p>` : ""}
+        <div class="tirada-texto">${textoConLista(t.descripcion)}</div>
+        <div class="tirada-pie">
+          <p class="precio">${precioTexto(t.precio)}</p>
+          <button type="button" class="btn btn-whatsapp" data-tirada="${t.id}">Reservar</button>
+        </div>
+      </article>`).join("") +
+    (cortas.length ? `
+      <article class="tirada tirada-tabla">
+        <p class="tirada-col">Preguntas libres</p>
+        <h3>Elegí cuántas preguntas</h3>
+        <p class="tirada-texto">Preguntas libres, con respuestas detalladas, sobre cualquier tema que quieras explorar. Con 10 preguntas podés distribuirlas a lo largo del mes.</p>
+        <ul class="tabla-preguntas">${cortas.map((t) => `
+          <li><span>${esc(t.nombre)}</span><strong>${precioTexto(t.precio)}</strong>
+          <button type="button" class="btn-mini" data-tirada="${t.id}" aria-label="Reservar ${esc(t.nombre)}">Reservar</button></li>`).join("")}
+        </ul>
+      </article>` : "");
+}
+
+function renderServicios() {
+  document.getElementById("grilla-servicios").innerHTML = SERVICIOS.map((s) => `
+    <article class="servicio" id="servicio-${s.id}">
+      <p class="etiqueta">${esc(s.etiqueta)}</p>
+      <h2>${esc(s.nombre)}</h2>
+      <p class="tirada-detalle">${esc(s.detalle)}</p>
+      <p>${esc(s.descripcion)}</p>
+      <ul class="servicio-items">${s.items.map((i) => `<li>${esc(i)}</li>`).join("")}</ul>
+      <div class="tirada-pie">
+        <p class="precio">${s.precio == null ? "Consultá tu propuesta" : precioTexto(s.precio)}</p>
+        <button type="button" class="btn" data-servicio="${s.id}">${s.precio == null ? "Consultar" : "Quiero anotarme"}</button>
+      </div>
+    </article>`).join("");
+}
+
 if (!SITIO.mostrarTiradas || !TIRADAS.length) {
   document.querySelectorAll("[data-tiradas]").forEach((el) => el.remove());
+} else {
+  renderTiradas();
+  renderServicios();
 }
 
 // ---------- Intenciones ----------
@@ -120,15 +181,17 @@ function lineasPedido() {
   return Object.entries(pedido).filter(([, c]) => c > 0).map(([clave, cant]) => {
     const [id, opcion] = clave.split("|");
     const p = PRODUCTOS.find((x) => x.id === id);
-    return { clave, p, opcion, cant, texto: p.nombre + (opcion ? ` (${opcion})` : "") };
+    const op = opcion && p.opciones ? p.opciones.valores.find((v) => v.nombre === opcion) : null;
+    const precio = op && op.precio != null ? op.precio : p.precio;
+    return { clave, p, opcion, cant, precio, texto: p.nombre + (opcion ? ` (${opcion})` : "") };
   });
 }
 
 function renderPedido() {
   const lineas = lineasPedido();
   const unidades = lineas.reduce((t, l) => t + l.cant, 0);
-  const sinPrecio = lineas.some((l) => l.p.precio == null);
-  const total = lineas.reduce((t, l) => t + (l.p.precio || 0) * l.cant, 0);
+  const sinPrecio = lineas.some((l) => l.precio == null);
+  const total = lineas.reduce((t, l) => t + (l.precio || 0) * l.cant, 0);
   document.getElementById("pedido-lista").innerHTML = lineas.length
     ? lineas.map((l) => `<li>
         <span>${esc(l.texto)}</span>
@@ -148,8 +211,8 @@ function renderPedido() {
 function enviarPedido() {
   const lineas = lineasPedido();
   if (!lineas.length) return toast("Agregá algún producto primero");
-  const sinPrecio = lineas.some((l) => l.p.precio == null);
-  const total = lineas.reduce((t, l) => t + (l.p.precio || 0) * l.cant, 0);
+  const sinPrecio = lineas.some((l) => l.precio == null);
+  const total = lineas.reduce((t, l) => t + (l.precio || 0) * l.cant, 0);
   abrirWhatsApp(
     `¡Hola Melisa! Quiero hacer este pedido:\n` +
     lineas.map((l) => `• ${l.cant} × ${l.texto}`).join("\n") +
@@ -191,6 +254,17 @@ document.addEventListener("click", (e) => {
   }
   if (d.mas) { pedido[d.mas]++; renderPedido(); }
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
+  if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); }
+  if (d.tirada) {
+    const t = TIRADAS.find((x) => x.id === d.tirada);
+    abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?`);
+  }
+  if (d.servicio) {
+    const sv = SERVICIOS.find((x) => x.id === d.servicio);
+    abrirWhatsApp(sv.id === "eventos"
+      ? "¡Hola Melisa! Quiero consultar por tarot para un evento. Te cuento: tipo de evento, fecha, lugar y cantidad de invitados aproximada."
+      : `¡Hola Melisa! Quiero info para anotarme en «${sv.nombre}».`);
+  }
   if (b.id === "ver-pedido") abrirPedido(true);
   if (b.id === "cerrar-pedido") abrirPedido(false);
   if (b.id === "pedido-enviar") enviarPedido();

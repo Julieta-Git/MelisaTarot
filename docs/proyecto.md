@@ -4,6 +4,16 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 
 **Estado (11/11/2026):** catálogo real cargado desde su PDF "Melisa Tarot · Cristales, aromas y rituales" (46 productos con precio, fotos y textos). Diseño adaptado al PDF: bordó #280100, dorado #dac473, Playfair Display + Inter, fondos pastel por colección. Faltan los datos de la sección 2.
 
+## Catálogo de WhatsApp Business (11/11/2026)
+Leído desde el WhatsApp Web de Julieta (solo lectura, sesión cerrada al terminar). Agregado a la web:
+- **32 tiradas con precio** ($3.000 a $50.000) en 8 colecciones. "Lecturas rápidas" y "Preguntas libres" (2 a 10 preguntas) se agruparon por afinidad: en el catálogo esos ítems están solo en "Todos los artículos" — a confirmar.
+- **Curso Aprender Tarot** $45.000 (3 meses, 12 clases, virtual + prácticas presenciales).
+- **Tarot para eventos** (casamientos, cumpleaños, despedidas…), sin precio: "Consultar".
+- **Mazos**: Rider-Waite $15.000; Sibilla Italiana $24.000 sin manual / $33.999 con manual personalizado (sin fotos ni descripción).
+- Precios de la tienda holística coinciden con el PDF.
+- Info importante del catálogo (alias y pagos, turnos, videollamadas) son imágenes: no se transcribieron. Pedir el texto a Melisa para las preguntas frecuentes.
+- En el catálogo aparece otra versión del logo: pantera roja con "MELISA TAROT" sobre fondo negro. Preguntar cuál prefiere y pedir el archivo.
+
 ## Novedades del PDF (11/11/2026)
 - Marca: **Melisa Tarot**, lema "Cristales, aromas y rituales". Logo: pantera en círculo naranja (solo bitmap 420 px).
 - Contacto: WhatsApp +54 9 370 437-7078, Instagram @melisatarot.777, melisatarot.fsa@gmail.com.
@@ -58,7 +68,7 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 - ⭐ Páginas que faltan en el PDF: Difusores colgantes y esferas, Refills, Aromas (productos y precios).
 - ⭐ Precio de los 6 combos (en la web dicen "Precio a consultar").
 - ⭐ Ciudad, envíos, retiro y medios de pago (el PDF no lo dice; código 370 sugiere Formosa).
-- ⭐ ¿La web incluye tiradas? El PDF no las menciona.
+- ✓ Tiradas: ya cargadas desde el catálogo de WhatsApp. Falta: cómo se entregan (audio, video, escrito), tiempos y si las colecciones armadas están bien.
 - Fotos originales en alta (las del PDF tienen 300-500 px) y logo en alta o SVG.
 - Origen y permiso de las fotos de Roll On Aurora, Guardiana y Santuario (parecen de banco o IA; no se publicaron).
 - Nombre exacto de los sprays áuricos ("Escudo" aparece debajo de Rosa Dulce y en "Escudo Violeta Llama").
@@ -140,6 +150,8 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 | 11/11/2026 | Paleta provisoria violeta/crema/dorado | No tenemos su Instagram todavía | Reemplazada |
 | 11/11/2026 | Diseño tomado del catálogo PDF (bordó, dorado, Playfair + Inter, pastel por colección) | Es la identidad que ella ya usa | Implementado |
 | 11/11/2026 | Pedido con barra fija abajo + panel; velas y biosahumerios con selector de color/aroma | 46 productos: el pedido tiene que estar siempre a mano; el mensaje incluye la opción elegida | Implementado |
-| 11/11/2026 | Tiradas ocultas | El PDF no las trae | Hasta que Melisa confirme |
+| 11/11/2026 | Tiradas ocultas | El PDF no las trae | Reemplazada |
+| 11/11/2026 | Tiradas, curso y eventos desde el catálogo de WhatsApp; cada tirada con botón "Reservar" directo a WhatsApp, preguntas libres en una tabla | Una lectura se reserva de a una; 9 tarjetas iguales de preguntas ensuciaban la página | Implementado |
+| 11/11/2026 | Preguntas de cada tirada plegadas en "Ver qué incluye" | 32 tiradas largas hacían la página eterna en el celular | Implementado |
 | 11/11/2026 | No publicar fotos de Aurora/Guardiana/Santuario | Derechos dudosos | Hasta confirmar |
 | 11/11/2026 | Material de la clienta (PDF, info/) fuera del repo con .gitignore | El PDF pesa 27 MB y es material interno | Implementado |

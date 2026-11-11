@@ -21,7 +21,7 @@ const SITIO = {
   email: "melisatarot.fsa@gmail.com",
   ciudad: null,                     // el PDF no lo dice (¿Formosa?) — A CONFIRMAR
   mostrarPrecios: true,
-  mostrarTiradas: false,            // el PDF no trae tiradas; activar cuando Melisa las mande
+  mostrarTiradas: true,             // tiradas tomadas de su catálogo de WhatsApp Business (11/11/2026)
   aviso: "Los productos y los aromas pueden variar según la disponibilidad. Consultá antes de pedir.",
 };
 
@@ -34,6 +34,7 @@ const CATEGORIAS = [
   { id: "aceite", nombre: "Aceites", fondo: "#fff0bf" },
   { id: "vela", nombre: "Velas", fondo: "#ffd6e0" },
   { id: "biosahumerio", nombre: "Biosahumerios", fondo: "#e0eec6" },
+  { id: "mazo", nombre: "Mazos de tarot", fondo: "#e8dccb" },
   { id: "combo", nombre: "Regalos y combos", fondo: "#fbd9ea" },
   // Faltan en el PDF (páginas 19 a 24): Difusores colgantes y esferas, Refills, Aromas — A CONFIRMAR
 ];
@@ -206,6 +207,16 @@ const PRODUCTOS = [
     ideal: "Para limpiar el ambiente y cerrar el día con calma.",
     opciones: { titulo: "Elegí el aroma", valores: ["Lavanda", "Ajo y Azúcar", "Ruda", "Eucalipto", "Palo Santo Aborigen Hembra", "Palo Santo Aborigen Hembra con Canela de Marruecos", "Palo Santo Peruano", "Romero", "Cedrón"].map((nombre) => ({ nombre })) } },
 
+  // ---------- MAZOS DE TAROT (del catálogo de WhatsApp; sin foto todavía) ----------
+  { id: "mazo-rider-waite", nombre: "Mazo Rider-Waite", categoria: "mazo", precio: 15000, foto: null,
+    descripcion: "Mazo de tarot Rider-Waite." /* el catálogo no trae descripción — A CONFIRMAR */ },
+  { id: "mazo-sibilla", nombre: "Sibilla Italiana", categoria: "mazo", precio: 24000, foto: null,
+    descripcion: "Mazo de cartas Sibilla Italiana.",
+    opciones: { titulo: "Presentación", valores: [
+      { nombre: "Sin manual personalizado", texto: "$24.000" },
+      { nombre: "Con manual personalizado", texto: "$33.999", precio: 33999 },
+    ] } },
+
   // ---------- REGALOS Y COMBOS (sin precio en el PDF — A CONFIRMAR) ----------
   { id: "combo-calma", nombre: "Combo Calma total", categoria: "combo", precio: null, intencion: "calma", foto: F("spray-cristalino-amatista"),
     incluye: ["Roll On Amatista", "Spray Amatista", "Sales Descanso Real"], descripcion: "Para quien necesita bajar un cambio y descansar." },
@@ -221,11 +232,109 @@ const PRODUCTOS = [
     incluye: ["Difusor Esfera", "Bruma Lilas", "Difusor Colgante"], descripcion: "Un detalle lindo para una casa nueva o un cumpleaños." },
 ];
 
-// Tiradas: el PDF no las trae. Se muestran solo si SITIO.mostrarTiradas = true.
-const TIRADAS = [];
+// =====================================================================
+// TIRADAS Y SERVICIOS — del catálogo de WhatsApp Business de Melisa
+// (leído el 11/11/2026). Textos y precios tal cual el catálogo.
+// Las colecciones marcadas (*) se armaron por afinidad: en el catálogo
+// esos ítems figuran solo en "Todos los artículos" — A CONFIRMAR.
+// Si la descripción tiene "1) ... 2) ..." se muestra como lista.
+// =====================================================================
+const COLECCIONES_TIRADAS = [
+  { id: "nuevas", nombre: "¡Nuevas!" },
+  { id: "romanticas", nombre: "Lecturas románticas" },
+  { id: "karmicas", nombre: "Lecturas kármicas" },
+  { id: "personales", nombre: "Lecturas personales" },
+  { id: "generales", nombre: "Lecturas generales" },
+  { id: "resolutivo", nombre: "Tarot resolutivo" },
+  { id: "rapidas", nombre: "Lecturas rápidas" },          // (*)
+  { id: "preguntas", nombre: "Preguntas libres" },         // (*)
+];
+
+const TIRADAS = [
+  // ¡Nuevas!
+  { id: "cruz-celta", coleccion: "nuevas", nombre: "Cruz Celta", precio: 20000,
+    descripcion: "Lectura clásica del Tarot por excelencia. A través de 10 cartas, analizamos la situación que estás viviendo, siguiendo la estructura celta. La lectura más completa para analizar un tema a profundidad." },
+  { id: "detector-de-mentiras", coleccion: "nuevas", nombre: "Detector de mentiras", precio: 20000,
+    descripcion: "Una lectura diseñada para revelar las historias que te contás a vos mismo: autoengaños, bloqueos mentales ocultos y verdades que estás necesitando escuchar. Se basa en 5 pilares clave: 1) La fantasía. 2) La realidad. 3) El bloqueo oculto. 4) La verdad incómoda. 5) La medicina / solución. Apta para cualquier tema o situación donde necesites cuestionar tus creencias y tu narrativa actual, accediendo a una visión clara y honesta." },
+  { id: "sesion-personalizada", coleccion: "nuevas", nombre: "Sesión Personalizada", precio: 50000, detalle: "Videoconsulta · hasta 80 minutos (+extras)", destacada: true,
+    descripcion: "Una experiencia individual y exclusiva, diseñada para quienes buscan un encuentro más profundo. A través de la conversación y el tarot, exploraremos tu situación con calma, claridad y el tiempo necesario para responder cada una de tus dudas." },
+
+  // Románticas
+  { id: "casi-algo", coleccion: "romanticas", nombre: "Lectura del Casi Algo", precio: 15000,
+    descripcion: "A partir de 5 preguntas clave, profundizamos en lo que está sucediendo entre vos y tu “casi algo”: 1) ¿Cuáles son sus verdaderas intenciones conmigo? 2) ¿Qué siente y cómo me ve en realidad? 3) ¿Qué lo/la frena a formalizar conmigo? 4) Pregunta libre. 5) Consejo del tarot." },
+  { id: "parejas", coleccion: "romanticas", nombre: "Lectura para parejas", precio: 15000,
+    descripcion: "A través de 5 preguntas clave, profundizamos en lo que está sucediendo en tu relación y en la dinámica entre ambos: 1) ¿Qué siente por mí realmente en este momento? 2) ¿Qué piensa de nosotros? 3) ¿Qué intenciones tiene a largo plazo? 4) Pregunta libre. 5) Consejo del tarot para fortalecer el vínculo." },
+  { id: "ex-parejas", coleccion: "romanticas", nombre: "Lectura para ex parejas", precio: 15000,
+    descripcion: "A través de 5 preguntas clave, exploramos en profundidad el vínculo con tu ex pareja para comprender qué pasó, qué quedó pendiente y qué lugar ocupa hoy: 1) ¿Qué quedó pendiente entre ambos? 2) ¿Es un cierre definitivo o habrá reconciliación? 3) ¿Qué piensa y siente de nosotros actualmente? 4) Pregunta libre. 5) Consejo del Tarot." },
+  { id: "pretendiente", coleccion: "romanticas", nombre: "Lectura del Pretendiente", precio: 15000,
+    descripcion: "Ideal para explorar la conexión con una persona que te interesa y recién estás conociendo: 1) ¿Qué energía hay entre ustedes? 2) ¿Cómo te percibe esta persona? 3) ¿Cuáles son sus intenciones reales hacia vos? 4) ¿Qué potencial tiene este vínculo? 5) Consejo del Tarot." },
+  { id: "solteros", coleccion: "romanticas", nombre: "Lectura para solteros", precio: 15000,
+    descripcion: "A través de 5 preguntas clave, exploramos tu presente en el amor: tu energía actual, bloqueos o patrones que pueden estar influyendo, y las oportunidades que se abren para vos en este momento: 1) ¿Cómo me encuentro hoy en el amor? 2) ¿Qué tipo de vínculo estoy atrayendo actualmente? 3) ¿Qué bloqueos o patrones estoy repitiendo? 4) Energía e intenciones de mis pretendientes actuales. 5) Consejo del Tarot." },
+
+  // Kármicas
+  { id: "karma-de-pareja", coleccion: "karmicas", nombre: "¿Cuál es mi karma de pareja?", precio: 35000,
+    descripcion: "A través de 7 preguntas clave comprenderemos cuál es el karma vincular que venís cargando, por qué y cómo salir de ese ciclo: 1) ¿Qué patrón kármico se repite en mis relaciones? 2) ¿Qué heridas del pasado siguen influyendo en mi vida amorosa? 3) ¿Qué tipo de pareja suelo atraer y por qué? 4) ¿Qué necesito aprender en el amor? 5) ¿Qué debo soltar para romper este ciclo? 6) ¿Qué nueva forma de relacionarme está disponible para mí? 7) Consejo: ¿cómo puedo evolucionar y construir vínculos más sanos?" },
+  { id: "karma-personal", coleccion: "karmicas", nombre: "Mi Karma Personal", precio: 25000,
+    descripcion: "Una lectura enfocada en 6 preguntas clave, para saber en qué momento kármico estás en tu vida y qué viene a enseñarte: 1) ¿Qué lección kármica estoy transitando actualmente? 2) ¿Qué actitud o patrón necesito transformar? 3) ¿Qué me está enseñando esta experiencia en mi vida? 4) ¿Qué herida del pasado sigo repitiendo? 5) ¿Cómo puedo cerrar este ciclo de manera consciente? 6) Consejo final." },
+  { id: "karma-entre-nosotros", coleccion: "karmicas", nombre: "¿Hay un karma entre nosotros?", precio: 15000,
+    descripcion: "Lectura para reconocer si un vínculo es kármico: 1) ¿De qué vida o experiencia podría venir esto? 2) ¿Hacia dónde nos llevará este karma? 3) ¿Qué aprendizaje trae esta relación a mi vida? 4) Consejo: ¿cómo sanar o equilibrar este vínculo?" },
+
+  // Personales
+  { id: "arbol-familiar", coleccion: "personales", nombre: "Árbol Familiar y Sanación de Linaje", precio: 30000, detalle: "Sesión premium en 3 etapas",
+    descripcion: "Las cartas te orientan a comprender tu lugar en la familia, a reconocer qué cargas no te corresponden y liberarte de ellas, abriendo nuevos caminos que conecten con vos." },
+  { id: "tarot-evolutivo", coleccion: "personales", nombre: "Tarot Evolutivo", precio: 25000,
+    descripcion: "Sesión de autoconocimiento diseñada para ayudarte a tomar decisiones alineadas con tu alma y tus deseos. ¿Qué descubriremos? 1) Tu Umbral: la energía raíz de tu pasado y tu presente. 2) El Desafío: el punto ciego o autosabotaje que te mantiene estancado. 3) La Metamorfosis: una desconexión de expectativas ajenas y propias, para alinearte con tus verdaderos deseos y tu “Yo Futuro”. 4) El Impulso: los primeros pasos para acercarme a quién soy." },
+  { id: "reflejo-interior", coleccion: "personales", nombre: "Reflejo interior", precio: 25000,
+    descripcion: "Una lectura de autoconocimiento para verte con mayor claridad, distinguiendo entre cómo te percibís, cómo te proyectás y qué partes de vos están siendo malinterpretadas o no valoradas: 1) ¿Cómo me veo a mí misma/o hoy? 2) ¿Cómo creo que me perciben los demás? 3) ¿Qué prejuicio o idea sobre mí estoy sosteniendo y no es real? 4) ¿Qué virtudes no estoy viendo en mí? 5) ¿Qué valor o potencial propio estoy subestimando? 6) ¿Cómo empezar a alinearme conmigo y fortalecer mi identidad?" },
+
+  // Generales
+  { id: "general-mensual", coleccion: "generales", nombre: "Lectura general / mensual", precio: 20000,
+    descripcion: "Exploración profunda de los distintos ámbitos de tu vida: tu situación actual, tus vínculos (familia, amistades y pareja), los desafíos que estás atravesando y lo que depara el trabajo y las finanzas. Incluye consejo final guía. El objetivo es ayudarte a comprender dónde estás hoy, qué energías te rodean en el mes y cómo transitarlo con mayor claridad y dirección." },
+  { id: "energia-actual", coleccion: "generales", nombre: "Lectura de energía actual", precio: 15000,
+    descripcion: "Analizamos tu energía y las energías que te rodean en los distintos ámbitos de tu vida: vínculos (familia, amistades y pareja), trabajo, finanzas, desarrollo personal y emocional." },
+  { id: "mensaje-canalizado", coleccion: "generales", nombre: "Mensaje canalizado", precio: 10000,
+    descripcion: "Canalizamos a través del mazo un mensaje especialmente para vos: lo que el Tarot quiera comunicarte en este momento, con total libertad." },
+
+  // Resolutivo
+  { id: "espejo-compatibilidad", coleccion: "resolutivo", nombre: "Espejo de compatibilidad", precio: 15000,
+    descripcion: "Lectura en espejo que revela lo que cada persona siente, piensa y vive dentro del vínculo, incluso lo que no se dice. A través de dos filas (una por cada uno), se comparan las energías sobre los mismos ejes para ver si están en la misma sintonía: sentimientos, lealtad, compromiso, compañerismo, percepción del vínculo y posibles verdades ocultas. Aplicable a vínculos amorosos, amistades, compañeros o relaciones cercanas." },
+  { id: "consejo-especifico", coleccion: "resolutivo", nombre: "Consejo específico", precio: 8000,
+    descripcion: "Una lectura enfocada en un tema puntual que necesites resolver. El Tarot analiza la situación y te orienta sobre cómo abordarla: qué hacer, qué evitar y desde qué lugar actuar. Cierra con un consejo integrador que te guía en tu próximo paso." },
+  { id: "que-camino-elegir", coleccion: "resolutivo", nombre: "¿Qué camino elegir?", precio: 15000,
+    descripcion: "Una lectura enfocada en ayudarte a decidir entre dos opciones. Analizamos la energía de cada camino, qué podés esperar de cada uno y hacia dónde te conduce, para ver con claridad cuál está más alineada con vos en este momento." },
+  { id: "resolucion-problemas", coleccion: "resolutivo", nombre: "Resolución de Problemas", precio: 8000,
+    descripcion: "Perfecta para cuando algo no fluye y querés entender el origen, el aprendizaje y cómo resolverlo: 1) La raíz del problema actual. 2) Cómo debés abordarlo. 3) La solución." },
+
+  // Rápidas (*)
+  { id: "si-no", coleccion: "rapidas", nombre: "Lectura Sí / No", precio: 3000,
+    descripcion: "Lectura extensa que responde a una pregunta puntual con un “sí” o un “no”, acompañado de una explicación y desarrollo." },
+  { id: "tarot-flash", coleccion: "rapidas", nombre: "Tarot Flash", precio: 5000,
+    descripcion: "Lectura extensa respondiendo una sola pregunta, más un consejo." },
+
+  // Preguntas libres (*)
+  ...[[2, 9000], [3, 14000], [4, 18000], [5, 23000], [6, 27000], [7, 32000], [8, 36000], [9, 41000], [10, 45000]].map(([n, precio]) => ({
+    id: `preguntas-${n}`, coleccion: "preguntas", nombre: `${n} preguntas`, precio, corta: true,
+    descripcion: `Incluye ${n} preguntas libres, con respuestas detalladas, sobre cualquier tema que quieras explorar.` +
+      (n === 10 ? " Te permite distribuir y canjear las preguntas a lo largo del mes." : ""),
+  })),
+];
+
+// Otros servicios del catálogo de WhatsApp
+const SERVICIOS = [
+  { id: "aprender-tarot", nombre: "Aprender Tarot", precio: 45000, etiqueta: "Curso",
+    detalle: "3 meses · 12 clases · Virtual + prácticas presenciales",
+    descripcion: "Una formación para aprender a interpretar el Tarot desde cero, combinando teoría y práctica.",
+    items: ["1 clase virtual por semana", "Día y horario a elección", "Material y tareas semana a semana", "Clases grabadas para volver a verlas", "Arcanos Mayores y Menores", "Prácticas de lectura", "Encuentros presenciales de práctica"] },
+  { id: "eventos", nombre: "Tarot para eventos", precio: null, etiqueta: "Eventos y fiestas",
+    detalle: "Agenda abierta todos los meses",
+    descripcion: "Sumale una experiencia diferente a tu celebración: ¡tarot para tus invitados! Una propuesta original, divertida y llena de misterio que se adapta a todo tipo de eventos.",
+    items: ["Casamientos", "Fiestas privadas", "Despedidas de soltera", "Cumpleaños", "Eventos y celebraciones en general"] },
+];
 
 const PREGUNTAS = [
   { pregunta: "¿Cómo hago un pedido?", respuesta: "Elegí tu producto y tu aroma o color, sumalo al pedido y tocá «Enviar pedido por WhatsApp». Te confirmo la disponibilidad por ahí." },
+  { pregunta: "¿Cómo reservo una lectura?", respuesta: "Tocá «Reservar» en la lectura que quieras y se abre WhatsApp con el pedido escrito. Ahí coordinamos día y horario." },
+  { pregunta: "¿Cómo recibo mi lectura?", respuesta: null },
   { pregunta: "¿Cómo pago?", respuesta: null },
   { pregunta: "¿Hacen envíos?", respuesta: null },
   { pregunta: "¿Puedo retirar en persona?", respuesta: null },

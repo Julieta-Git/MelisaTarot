@@ -154,3 +154,42 @@ img { max-width: 100%; height: auto; display: block; }
 .toast.visible { transform: translate(-50%, 0); opacity: 1; visibility: visible; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* Tiradas */
+.tiradas { background: var(--bordo); color: var(--crema); }
+.tiradas .etiqueta { color: var(--dorado); }
+.tiradas .encabezado p:not(.etiqueta) { color: rgba(251, 246, 238, 0.75); }
+.filtros-oscuros button { border-color: rgba(218, 196, 115, 0.5); color: var(--crema); }
+.filtros-oscuros button[aria-pressed="true"] { background: var(--dorado); border-color: var(--dorado); color: var(--bordo); }
+.grilla-tiradas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); margin-top: 2rem; align-items: start; }
+.tirada { display: flex; flex-direction: column; padding: 1.5rem; border: 1px solid rgba(218, 196, 115, 0.28); border-radius: var(--radio); background: linear-gradient(165deg, var(--bordo-2), var(--bordo)); }
+.tirada.destacada { border-color: var(--dorado); box-shadow: 0 0 0 1px var(--dorado) inset; }
+.tirada-col { margin: 0 0 0.4rem; color: var(--dorado); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
+.tirada h3 { font-size: 1.45rem; font-weight: 600; }
+.tirada-detalle { margin: 0 0 0.6rem; font-size: 0.85rem; color: var(--dorado); }
+.tirada-texto { font-size: 0.92rem; color: rgba(251, 246, 238, 0.82); }
+.tirada-texto p { margin: 0 0 0.5rem; }
+.tirada-texto ol { margin: 0 0 0.6rem; padding-left: 1.2rem; }
+.tirada-texto li { margin-bottom: 0.25rem; }
+.tirada-pie { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: auto; padding-top: 0.9rem; border-top: 1px solid rgba(218, 196, 115, 0.2); }
+.tirada-pie .btn-whatsapp { width: auto; min-height: 44px; padding: 0.4rem 1.3rem; }
+.tirada .precio { color: var(--crema); }
+.tabla-preguntas { list-style: none; padding: 0; margin: 0.4rem 0 0; }
+.tabla-preguntas li { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 0.8rem; padding: 0.45rem 0; border-bottom: 1px solid rgba(218, 196, 115, 0.15); }
+.tabla-preguntas strong { font-family: "Playfair Display", serif; }
+.btn-mini { min-height: 36px; padding: 0.2rem 0.8rem; border: 1px solid var(--verde-wa); border-radius: 99px; background: var(--verde-wa); color: #fff; font: 600 0.8rem "Inter", sans-serif; cursor: pointer; }
+
+/* Servicios: curso y eventos */
+.servicios { background: #f6ecdc; }
+.grilla-servicios { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.servicio { display: flex; flex-direction: column; background: #fff; border-radius: var(--radio); padding: 1.8rem; box-shadow: 0 14px 30px -24px rgba(40, 1, 0, 0.6); }
+.servicio h2 { font-size: 1.9rem; }
+.servicio .tirada-detalle { color: var(--magenta); font-weight: 600; }
+.servicio > p { color: var(--tinta-suave); }
+.servicio-items { columns: 2; column-gap: 1.2rem; padding-left: 1.1rem; margin: 0 0 1rem; font-size: 0.92rem; }
+@media (max-width: 420px) { .servicio-items { columns: 1; } }
+.servicio .tirada-pie { border-top-color: rgba(58, 31, 20, 0.12); }
+.servicio .btn { min-height: 44px; background: var(--bordo); border-color: var(--bordo); color: var(--dorado); }
+.tirada-texto details { margin: 0 0 0.6rem; }
+.tirada-texto summary { cursor: pointer; color: var(--dorado); font-weight: 600; font-size: 0.88rem; padding: 0.3rem 0; }
+.tirada-texto details ol { margin-top: 0.4rem; }
