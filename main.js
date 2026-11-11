@@ -1,12 +1,9 @@
 const PENDIENTE = (t = "A confirmar") => `<span class="pendiente">${t}</span>`;
 const pesos = (n) => "$" + n.toLocaleString("es-AR");
-const precioTexto = (p) => !SITIO.mostrarPrecios ? "Consultar" : p == null ? PENDIENTE("Precio a confirmar") : pesos(p);
+const precioTexto = (p) => !SITIO.mostrarPrecios ? "Consultar" : p == null ? "Precio a consultar" : pesos(p);
 const categoria = (id) => CATEGORIAS.find((c) => c.id === id);
-const marcaTexto = SITIO.marca || "Nombre de la marca";
-
-function linkWhatsApp(texto) {
-  return SITIO.whatsapp ? `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}` : null;
-}
+const productosVisibles = PRODUCTOS.filter((p) => p.visible !== false);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
 function toast(msg) {
   const t = document.getElementById("toast");
@@ -16,103 +13,156 @@ function toast(msg) {
   toast.id = setTimeout(() => t.classList.remove("visible"), 2600);
 }
 
-// ---------- Marca y contacto ----------
-document.querySelectorAll("[data-marca]").forEach((el) => {
-  el.innerHTML = SITIO.marca ? SITIO.marca : PENDIENTE(marcaTexto);
-});
+function abrirWhatsApp(texto) {
+  if (!SITIO.whatsapp) return toast("Falta cargar el número de WhatsApp");
+  window.open(`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}`, "_blank", "noopener");
+}
+
+// ---------- Contacto y pie ----------
 document.getElementById("pie-contacto").innerHTML = [
-  SITIO.instagram
-    ? `<a href="https://instagram.com/${SITIO.instagram}" target="_blank" rel="noopener">@${SITIO.instagram}</a>`
-    : PENDIENTE("Instagram a confirmar"),
+  `<a href="https://wa.me/${SITIO.whatsapp}" target="_blank" rel="noopener">WhatsApp ${SITIO.telefonoVisible}</a>`,
+  `<a href="https://instagram.com/${SITIO.instagram}" target="_blank" rel="noopener">@${SITIO.instagram}</a>`,
+  `<a href="mailto:${SITIO.email}">${SITIO.email}</a>`,
   SITIO.ciudad || PENDIENTE("Ciudad a confirmar"),
-].join(" · ");
+].map((x) => `<span>${x}</span>`).join("");
+document.getElementById("aviso-stock").textContent = SITIO.aviso;
+document.getElementById("anio").textContent = new Date().getFullYear();
 
-// ---------- Tiradas ----------
-document.getElementById("grilla-tiradas").innerHTML = TIRADAS.filter((t) => t.visible).map((t) => `
-  <article class="tirada" id="tirada-${t.id}">
-    ${t.ejemplo ? '<span class="chip-ejemplo">Ejemplo</span>' : ""}
-    <div class="tirada-cartas" aria-hidden="true">${"<i></i>".repeat(Math.min(t.cartas, 5))}</div>
-    <h3>${t.nombre}</h3>
-    <p>${t.responde}</p>
-    <dl>
-      <div><dt>Cartas</dt><dd>${t.cartas}</dd></div>
-      <div><dt>Modalidad</dt><dd>${t.modalidad}</dd></div>
-      <div><dt>Entrega</dt><dd>${t.entrega}</dd></div>
-    </dl>
-    <p class="precio">${precioTexto(t.precio)}</p>
-    <button class="btn btn-whatsapp" type="button" data-tirada="${t.id}">Reservar por WhatsApp</button>
-  </article>`).join("");
+// ---------- Tiradas (ocultas hasta tener datos) ----------
+if (!SITIO.mostrarTiradas || !TIRADAS.length) {
+  document.querySelectorAll("[data-tiradas]").forEach((el) => el.remove());
+}
 
-// ---------- Productos ----------
-const pedido = {};
-let filtro = "todos";
-const visibles = () => PRODUCTOS.filter((p) => p.visible);
+// ---------- Intenciones ----------
+document.getElementById("intenciones").innerHTML = INTENCIONES.map((i, n) => `
+  <button type="button" class="intencion" data-intencion="${i.id}">
+    <span class="intencion-num">${n + 1}</span>
+    <span>${i.texto}</span>
+    <strong>${i.cristal}</strong>
+  </button>`).join("");
+
+// ---------- Tienda ----------
+const pedido = {}; // clave "id" o "id|opción" -> cantidad
+let filtro = { tipo: "categoria", valor: "todos" };
 
 function renderFiltros() {
-  const usadas = CATEGORIAS.filter((c) => visibles().some((p) => p.categoria === c.id));
-  document.getElementById("filtros").innerHTML = [{ id: "todos", nombre: "Todos" }, ...usadas]
-    .map((c) => `<button type="button" data-filtro="${c.id}" aria-pressed="${c.id === filtro}">${c.nombre}</button>`)
+  const usadas = CATEGORIAS.filter((c) => productosVisibles.some((p) => p.categoria === c.id));
+  document.getElementById("filtros").innerHTML = [{ id: "todos", nombre: "Todo" }, ...usadas]
+    .map((c) => `<button type="button" data-filtro="${c.id}" aria-pressed="${filtro.tipo === "categoria" && filtro.valor === c.id}">${c.nombre}</button>`)
     .join("");
 }
 
-function renderProductos() {
-  const lista = visibles()
-    .filter((p) => filtro === "todos" || p.categoria === filtro)
-    .sort((a, b) => b.destacado - a.destacado);
-  document.getElementById("grilla-productos").innerHTML = lista.map((p) => {
-    const cat = categoria(p.categoria);
-    return `
-    <article class="producto" id="producto-${p.id}">
-      <div class="producto-foto">
-        ${p.foto ? `<img src="${p.foto}" alt="${p.nombre}" loading="lazy">` : `<span class="simbolo" aria-hidden="true">${cat.simbolo}</span><small>Foto a confirmar</small>`}
-        ${p.ejemplo ? '<span class="chip-ejemplo">Ejemplo</span>' : ""}
-      </div>
-      <div class="producto-info">
-        <p class="producto-cat">${cat.nombre}</p>
-        <h3>${p.nombre}</h3>
-        <p>${p.descripcion}</p>
+function tarjeta(p) {
+  const cat = categoria(p.categoria);
+  const chips = [p.aroma && `Aroma ${p.aroma}`, p.ml, p.chakra && `Chakra ${p.chakra}`, p.detalle].filter(Boolean);
+  return `
+  <article class="producto" id="producto-${p.id}" style="--fondo:${cat.fondo}">
+    <div class="producto-foto">
+      ${p.foto
+        ? `<img src="${p.foto}" alt="${esc(p.nombre)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'sin-foto',textContent:'Foto próximamente'}))">`
+        : `<span class="sin-foto">Foto próximamente</span>`}
+      ${p.masVendido ? '<span class="badge">★ Más vendido</span>' : ""}
+    </div>
+    <div class="producto-info">
+      <h3>${esc(p.nombre)}${p.alias ? ` <small>o ${esc(p.alias)}</small>` : ""}</h3>
+      ${chips.length ? `<ul class="chips">${chips.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+      ${p.ml === null ? `<p>${PENDIENTE("Tamaño a confirmar")}</p>` : ""}
+      ${p.incluye ? `<p class="incluye"><strong>Incluye:</strong> ${p.incluye.map(esc).join(" + ")}</p>` : ""}
+      <p class="descripcion">${esc(p.descripcion)}</p>
+      ${p.beneficios ? `<p class="beneficios">${p.beneficios.map(esc).join(" · ")}</p>` : ""}
+      ${p.ideal ? `<p class="ideal">${esc(p.ideal)}</p>` : ""}
+      ${p.opciones ? `
+        <label class="opcion">${p.opciones.titulo}
+          <select data-opcion="${p.id}">
+            ${p.opciones.valores.map((v) => `<option value="${esc(v.nombre)}">${esc(v.nombre)}</option>`).join("")}
+          </select>
+        </label>
+        ${p.opciones.valores[0].texto ? `<p class="opcion-texto" data-opcion-texto="${p.id}">${esc(p.opciones.valores[0].texto)}</p>` : ""}` : ""}
+      <div class="producto-pie">
         <p class="precio">${precioTexto(p.precio)}</p>
-        <div class="contador" aria-label="Cantidad de ${p.nombre}">
-          <button type="button" data-menos="${p.id}" aria-label="Quitar ${p.nombre}">−</button>
-          <output data-cant="${p.id}">${pedido[p.id] || 0}</output>
-          <button type="button" data-mas="${p.id}" aria-label="Agregar ${p.nombre}">+</button>
-        </div>
+        <button type="button" class="btn btn-agregar" data-agregar="${p.id}">Agregar</button>
       </div>
-    </article>`;
-  }).join("");
+    </div>
+  </article>`;
+}
+
+function renderProductos() {
+  let lista = productosVisibles;
+  if (filtro.tipo === "categoria" && filtro.valor !== "todos") lista = lista.filter((p) => p.categoria === filtro.valor);
+  if (filtro.tipo === "intencion") lista = lista.filter((p) => p.intencion === filtro.valor);
+
+  // Agrupar por línea para mostrar el texto común arriba de cada grupo
+  let html = "";
+  const grupos = [];
+  lista.forEach((p) => {
+    const clave = filtro.tipo === "intencion" ? "_" : (p.linea || p.categoria);
+    let g = grupos.find((x) => x.clave === clave);
+    if (!g) grupos.push((g = { clave, items: [] }));
+    g.items.push(p);
+  });
+  grupos.forEach((g) => {
+    const linea = LINEAS[g.clave];
+    const cat = CATEGORIAS.find((c) => c.id === g.clave);
+    const titulo = filtro.tipo === "intencion"
+      ? INTENCIONES.find((i) => i.id === filtro.valor).texto
+      : linea ? linea.nombre : cat ? cat.nombre : "";
+    html += `<div class="grupo">
+      <div class="grupo-encabezado"><h3>${titulo}</h3>${linea ? `<p>${linea.texto}</p>` : ""}</div>
+      <div class="grilla-productos">${g.items.map(tarjeta).join("")}</div>
+    </div>`;
+  });
+  document.getElementById("productos").innerHTML = html || '<p class="vacio">No hay productos en esta categoría.</p>';
+  const quitar = document.getElementById("quitar-intencion");
+  quitar.hidden = filtro.tipo !== "intencion";
 }
 
 function lineasPedido() {
-  return PRODUCTOS.filter((p) => pedido[p.id]).map((p) => ({ p, cant: pedido[p.id] }));
+  return Object.entries(pedido).filter(([, c]) => c > 0).map(([clave, cant]) => {
+    const [id, opcion] = clave.split("|");
+    const p = PRODUCTOS.find((x) => x.id === id);
+    return { clave, p, opcion, cant, texto: p.nombre + (opcion ? ` (${opcion})` : "") };
+  });
 }
 
 function renderPedido() {
   const lineas = lineasPedido();
-  const conPrecio = lineas.every(({ p }) => p.precio != null) && SITIO.mostrarPrecios;
-  const total = lineas.reduce((t, { p, cant }) => t + (p.precio || 0) * cant, 0);
-  document.getElementById("pedido").classList.toggle("activo", lineas.length > 0);
+  const unidades = lineas.reduce((t, l) => t + l.cant, 0);
+  const sinPrecio = lineas.some((l) => l.p.precio == null);
+  const total = lineas.reduce((t, l) => t + (l.p.precio || 0) * l.cant, 0);
   document.getElementById("pedido-lista").innerHTML = lineas.length
-    ? lineas.map(({ p, cant }) => `<li>${cant} × ${p.nombre}</li>`).join("")
+    ? lineas.map((l) => `<li>
+        <span>${esc(l.texto)}</span>
+        <span class="contador">
+          <button type="button" data-menos="${esc(l.clave)}" aria-label="Quitar uno de ${esc(l.texto)}">−</button>
+          <output>${l.cant}</output>
+          <button type="button" data-mas="${esc(l.clave)}" aria-label="Agregar uno de ${esc(l.texto)}">+</button>
+        </span></li>`).join("")
     : '<li class="vacio">Todavía no agregaste productos.</li>';
-  document.getElementById("pedido-total").textContent = lineas.length && !conPrecio ? "a consultar" : pesos(total);
-  document.querySelectorAll("[data-cant]").forEach((o) => (o.textContent = pedido[o.dataset.cant] || 0));
+  const totalTexto = sinPrecio ? `${pesos(total)} + a consultar` : pesos(total);
+  document.getElementById("pedido-total").textContent = totalTexto;
+  document.getElementById("barra-cant").textContent = unidades;
+  document.getElementById("barra-total").textContent = totalTexto;
+  document.getElementById("barra-pedido").hidden = unidades === 0;
 }
 
 function enviarPedido() {
   const lineas = lineasPedido();
   if (!lineas.length) return toast("Agregá algún producto primero");
-  const texto = `Hola! Quiero hacer este pedido de la tienda:\n` +
-    lineas.map(({ p, cant }) => `• ${cant} × ${p.nombre}`).join("\n");
-  abrirWhatsApp(texto);
+  const sinPrecio = lineas.some((l) => l.p.precio == null);
+  const total = lineas.reduce((t, l) => t + (l.p.precio || 0) * l.cant, 0);
+  abrirWhatsApp(
+    `¡Hola Melisa! Quiero hacer este pedido:\n` +
+    lineas.map((l) => `• ${l.cant} × ${l.texto}`).join("\n") +
+    `\nTotal estimado: ${pesos(total)}${sinPrecio ? " + productos a consultar" : ""}\n¿Me confirmás la disponibilidad?`
+  );
 }
 
-function abrirWhatsApp(texto) {
-  const url = linkWhatsApp(texto);
-  if (!url) {
-    console.info("Mensaje que se enviaría:\n" + texto);
-    return toast("Falta cargar el número de WhatsApp (prototipo)");
-  }
-  window.open(url, "_blank", "noopener");
+function abrirPedido(abrir) {
+  const panel = document.getElementById("pedido");
+  panel.classList.toggle("abierto", abrir);
+  panel.setAttribute("aria-hidden", String(!abrir));
+  document.body.classList.toggle("sin-scroll", abrir);
+  if (abrir) panel.querySelector("button").focus();
 }
 
 // ---------- Preguntas ----------
@@ -121,17 +171,41 @@ document.getElementById("lista-preguntas").innerHTML = PREGUNTAS.map((q) => `
 
 // ---------- Eventos ----------
 document.addEventListener("click", (e) => {
-  const b = e.target.closest("button, a");
+  const b = e.target.closest("button");
   if (!b) return;
-  if (b.dataset.filtro) { filtro = b.dataset.filtro; renderFiltros(); renderProductos(); }
-  if (b.dataset.mas) { pedido[b.dataset.mas] = (pedido[b.dataset.mas] || 0) + 1; renderPedido(); }
-  if (b.dataset.menos) { pedido[b.dataset.menos] = Math.max(0, (pedido[b.dataset.menos] || 0) - 1); renderPedido(); }
-  if (b.dataset.tirada) {
-    const t = TIRADAS.find((x) => x.id === b.dataset.tirada);
-    abrirWhatsApp(`Hola! Quiero reservar la ${t.nombre} (${t.modalidad}).`);
+  const d = b.dataset;
+  if (d.filtro) { filtro = { tipo: "categoria", valor: d.filtro }; renderFiltros(); renderProductos(); }
+  if (d.intencion) {
+    filtro = { tipo: "intencion", valor: d.intencion };
+    renderFiltros(); renderProductos();
+    document.getElementById("tienda").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }
-  if (b.id === "pedido-enviar") { e.preventDefault(); enviarPedido(); }
+  if (b.id === "quitar-intencion") { filtro = { tipo: "categoria", valor: "todos" }; renderFiltros(); renderProductos(); }
+  if (d.agregar) {
+    const p = PRODUCTOS.find((x) => x.id === d.agregar);
+    const sel = document.querySelector(`[data-opcion="${p.id}"]`);
+    const clave = sel ? `${p.id}|${sel.value}` : p.id;
+    pedido[clave] = (pedido[clave] || 0) + 1;
+    renderPedido();
+    toast(`Sumaste ${p.nombre}${sel ? ` (${sel.value})` : ""}`);
+  }
+  if (d.mas) { pedido[d.mas]++; renderPedido(); }
+  if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
+  if (b.id === "ver-pedido") abrirPedido(true);
+  if (b.id === "cerrar-pedido") abrirPedido(false);
+  if (b.id === "pedido-enviar") enviarPedido();
 });
+
+document.addEventListener("change", (e) => {
+  const sel = e.target.closest("[data-opcion]");
+  if (!sel) return;
+  const p = PRODUCTOS.find((x) => x.id === sel.dataset.opcion);
+  const texto = document.querySelector(`[data-opcion-texto="${p.id}"]`);
+  if (texto) texto.textContent = p.opciones.valores.find((v) => v.nombre === sel.value).texto;
+});
+
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") abrirPedido(false); });
+document.getElementById("pedido").addEventListener("click", (e) => { if (e.target.id === "pedido") abrirPedido(false); });
 
 renderFiltros();
 renderProductos();

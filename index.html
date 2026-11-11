@@ -3,99 +3,116 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tarot y tienda holística</title>
-  <meta name="description" content="Tiradas de tarot y tienda holística: roll-ons, sprays áuricos, velas de ritual y cuarzos. Pedidos por WhatsApp.">
+  <title>Melisa Tarot · Cristales, aromas y rituales</title>
+  <meta name="description" content="Roll-ons con cristales, sprays áuricos, brumas, sales de baño, velas alquímicas y biosahumerios hechos a mano, con intención. Pedidos por WhatsApp.">
+  <meta property="og:title" content="Melisa Tarot · Cristales, aromas y rituales">
+  <meta property="og:description" content="Cristales, aromas y rituales hechos a mano, con intención.">
+  <meta property="og:image" content="assets/logo-pantera.webp">
+  <meta name="theme-color" content="#280100">
+  <link rel="icon" href="assets/logo-pantera.webp" type="image/webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- PROTOTIPO: los recuadros punteados (.pendiente) son datos que falta confirmar con la clienta -->
-  <div class="aviso-prototipo" role="note">Prototipo con datos de ejemplo. Lo punteado falta confirmarlo.</div>
-
   <header class="top">
-    <a class="marca" href="#inicio"><span class="marca-simbolo" aria-hidden="true">☾</span><span data-marca></span></a>
+    <a class="marca" href="#inicio"><img src="assets/logo-pantera.webp" alt="" width="40" height="40"><span>Melisa Tarot</span></a>
     <nav class="menu" aria-label="Secciones">
-      <a href="#tiradas">Tiradas</a>
       <a href="#tienda">Tienda</a>
-      <a href="#preguntas">Preguntas</a>
+      <a href="#tiradas" data-tiradas>Tiradas</a>
+      <a href="#como-pedir">Cómo pedir</a>
     </nav>
   </header>
 
   <main id="inicio">
     <section class="hero">
-      <div class="estrellas" aria-hidden="true"></div>
-      <p class="etiqueta">Tarot · Tienda holística</p>
-      <h1>Escuchá lo que <em>las cartas</em> tienen para decirte</h1>
-      <p class="bajada">Tiradas personalizadas y herramientas para tus rituales en casa. Elegí lo que necesitás y pedilo por WhatsApp.</p>
-      <div class="acciones">
-        <a class="btn" href="#tiradas">Ver tiradas</a>
-        <a class="btn btn-borde" href="#tienda">Ir a la tienda</a>
-      </div>
-    </section>
-
-    <section id="tiradas" class="seccion">
-      <div class="encabezado">
-        <p class="etiqueta">Tiradas</p>
-        <h2>¿Qué querés preguntarle al tarot?</h2>
-      </div>
-      <div class="grilla-tiradas" id="grilla-tiradas"></div>
-    </section>
-
-    <section id="tienda" class="seccion seccion-clara">
-      <div class="encabezado">
-        <p class="etiqueta">Tienda holística</p>
-        <h2>Para tus rituales en casa</h2>
-      </div>
-      <div class="filtros" id="filtros" role="group" aria-label="Filtrar por categoría"></div>
-      <div class="grilla-productos" id="grilla-productos"></div>
-
-      <aside class="pedido" id="pedido" aria-live="polite">
-        <h3>Tu pedido</h3>
-        <ul id="pedido-lista"></ul>
-        <p class="pedido-total">Total estimado: <strong id="pedido-total">$0</strong></p>
-        <a class="btn btn-whatsapp" id="pedido-enviar" href="#" target="_blank" rel="noopener">Enviar pedido por WhatsApp</a>
-      </aside>
-    </section>
-
-    <section id="sobre-mi" class="seccion">
-      <div class="sobre">
-        <div class="sobre-foto pendiente-caja">Foto de ella<br><small>A confirmar</small></div>
-        <div>
-          <p class="etiqueta">Sobre mí</p>
-          <h2>Quién lee tus cartas</h2>
-          <p><span class="pendiente">Texto sobre ella, su historia y cómo trabaja. A confirmar con la clienta.</span></p>
+      <div class="hero-texto">
+        <p class="etiqueta">✦ Hecho a mano, con intención</p>
+        <h1>Cristales, aromas <em>y rituales</em></h1>
+        <p class="bajada">Roll-ons con cristales, sprays áuricos, brumas, sales, velas alquímicas y biosahumerios para tus rituales de todos los días.</p>
+        <div class="acciones">
+          <a class="btn" href="#tienda">Ver la tienda</a>
+          <a class="btn btn-borde" href="#guia">¿Qué necesitás?</a>
         </div>
       </div>
+      <div class="hero-logo" aria-hidden="true">
+        <img src="assets/logo-pantera.webp" alt="" width="420" height="420">
+      </div>
     </section>
 
-    <section id="como-comprar" class="seccion seccion-clara">
+    <section id="guia" class="seccion guia">
       <div class="encabezado">
-        <p class="etiqueta">Cómo comprar</p>
-        <h2>Simple, por WhatsApp</h2>
+        <p class="etiqueta">✧ Mini guía</p>
+        <h2>¿Qué necesitás hoy?</h2>
+        <p>Elegí cómo te sentís y te muestro los productos para acompañarte.</p>
+      </div>
+      <div class="intenciones" id="intenciones"></div>
+    </section>
+
+    <section id="tienda" class="seccion tienda">
+      <div class="encabezado">
+        <p class="etiqueta">Colecciones</p>
+        <h2>La tienda</h2>
+      </div>
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar por colección"></div>
+      <p class="filtro-activo"><button type="button" id="quitar-intencion" class="link" hidden>✕ Ver todos los productos</button></p>
+      <div id="productos"></div>
+    </section>
+
+    <section id="tiradas" class="seccion" data-tiradas>
+      <div class="encabezado"><p class="etiqueta">Tarot</p><h2>Tiradas</h2></div>
+      <div id="grilla-tiradas"></div>
+    </section>
+
+    <section id="como-pedir" class="seccion como-pedir">
+      <div class="encabezado">
+        <p class="etiqueta">Pedí el tuyo conmigo</p>
+        <h2>¿Llegaste hasta acá? Entonces ya tenés una favorita</h2>
       </div>
       <ol class="pasos">
-        <li><strong>Elegí</strong> tu tirada o los productos que quieras.</li>
-        <li><strong>Tocá el botón</strong> y se abre WhatsApp con tu pedido escrito.</li>
-        <li><strong>Coordinamos</strong> el pago y la entrega por chat. <span class="pendiente">Medios de pago y entrega a confirmar</span></li>
+        <li><strong>Elegí tu producto</strong> y sumalo al pedido.</li>
+        <li><strong>Elegí tu aroma o color</strong> cuando el producto lo tenga.</li>
+        <li><strong>Escribime por WhatsApp</strong> y te confirmo la disponibilidad.</li>
       </ol>
+      <p class="aviso" id="aviso-stock"></p>
     </section>
 
     <section id="preguntas" class="seccion">
-      <div class="encabezado">
-        <p class="etiqueta">Preguntas frecuentes</p>
-        <h2>Lo que más me preguntan</h2>
-      </div>
+      <div class="encabezado"><p class="etiqueta">Preguntas frecuentes</p><h2>Antes de pedir</h2></div>
       <div class="preguntas" id="lista-preguntas"></div>
     </section>
   </main>
 
   <footer class="pie">
-    <p class="marca"><span class="marca-simbolo" aria-hidden="true">☾</span><span data-marca></span></p>
-    <p id="pie-contacto"></p>
+    <img src="assets/logo-pantera.webp" alt="" width="72" height="72">
+    <p class="pie-marca">Melisa Tarot</p>
+    <p class="pie-lema">Cristales, aromas y rituales</p>
+    <p class="pie-contacto" id="pie-contacto"></p>
     <p class="nota">Los productos acompañan tus rituales e intenciones; no reemplazan ningún tratamiento médico.</p>
+    <p class="nota">© <span id="anio"></span> Melisa Tarot</p>
   </footer>
+
+  <div class="barra-pedido" id="barra-pedido" hidden>
+    <button type="button" id="ver-pedido">
+      <span>Tu pedido · <b id="barra-cant">0</b></span>
+      <span id="barra-total">$0</span>
+      <span class="barra-ver">Ver y enviar</span>
+    </button>
+  </div>
+
+  <div class="pedido" id="pedido" aria-hidden="true" role="dialog" aria-labelledby="pedido-titulo">
+    <div class="pedido-panel">
+      <div class="pedido-cabecera">
+        <h2 id="pedido-titulo">Tu pedido</h2>
+        <button type="button" id="cerrar-pedido" class="cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <ul id="pedido-lista"></ul>
+      <p class="pedido-total">Total estimado: <strong id="pedido-total">$0</strong></p>
+      <button type="button" class="btn btn-whatsapp" id="pedido-enviar">Enviar pedido por WhatsApp</button>
+      <p class="nota">Te confirmo disponibilidad, pago y entrega por chat.</p>
+    </div>
+  </div>
 
   <div class="toast" id="toast" role="status"></div>
 

@@ -1,8 +1,16 @@
-# Web de la tarotista con tienda holística
+# Web de Melisa Tarot (tarot + tienda holística)
 
 _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. Propuesta original en propuesta-y-mensaje.md (carpeta del proyecto)._
 
-**Estado:** prototipo con datos de ejemplo en la raíz del repo. Nada de la clienta está cargado todavía porque no tenemos sus datos.
+**Estado (11/11/2026):** catálogo real cargado desde su PDF "Melisa Tarot · Cristales, aromas y rituales" (46 productos con precio, fotos y textos). Diseño adaptado al PDF: bordó #280100, dorado #dac473, Playfair Display + Inter, fondos pastel por colección. Faltan los datos de la sección 2.
+
+## Novedades del PDF (11/11/2026)
+- Marca: **Melisa Tarot**, lema "Cristales, aromas y rituales". Logo: pantera en círculo naranja (solo bitmap 420 px).
+- Contacto: WhatsApp +54 9 370 437-7078, Instagram @melisatarot.777, melisatarot.fsa@gmail.com.
+- Colecciones cargadas: Roll On (Crystal y Herba-Crystal $6.000, Aceites Esenciales $10.000), Sprays $14.000, Brumas $24.000, Sales $10.000, Aceite Jazmín $15.000, 3 Velas Alquímicas $20.000 (color a elección), Biosahumerio $2.000 (aroma a elección), 6 combos sin precio.
+- Mini guía "¿Qué necesitás?" (calma/amor/protección/energía) convertida en filtro.
+- Se corrigieron erratas evidentes del PDF y el texto repetido de cada línea se muestra una vez arriba del grupo.
+- El PDF **no trae tiradas**: la sección está oculta (`mostrarTiradas: false`).
 
 ---
 
@@ -46,6 +54,18 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 - Aceptó la propuesta de la web (11/11/2026).
 
 ### A consultar (prioridad ⭐ = sin esto no se puede publicar)
+**Del catálogo PDF (nuevo)**
+- ⭐ Páginas que faltan en el PDF: Difusores colgantes y esferas, Refills, Aromas (productos y precios).
+- ⭐ Precio de los 6 combos (en la web dicen "Precio a consultar").
+- ⭐ Ciudad, envíos, retiro y medios de pago (el PDF no lo dice; código 370 sugiere Formosa).
+- ⭐ ¿La web incluye tiradas? El PDF no las menciona.
+- Fotos originales en alta (las del PDF tienen 300-500 px) y logo en alta o SVG.
+- Origen y permiso de las fotos de Roll On Aurora, Guardiana y Santuario (parecen de banco o IA; no se publicaron).
+- Nombre exacto de los sprays áuricos ("Escudo" aparece debajo de Rosa Dulce y en "Escudo Violeta Llama").
+- Bruma Laurel: ¿125 o 250 ml?
+- ¿Está bien que corrijamos las erratas del PDF?
+- Revisar frases de salud en sales y roll-ons ("favorece la relajación muscular", "sanando emociones"): conviene suavizarlas.
+
 **Decisión principal**
 - ⭐ ¿Opción A (vos actualizás) u opción B (ella carga desde una planilla)? ¿Qué precio quedó?
 
@@ -117,4 +137,9 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 | 9/11/2026 | Panel para opción B: Google Sheets publicado como CSV (alternativa Pages CMS) | Ella ya sabe usar planillas, no requiere cuentas raras | Propuesto, falta saber si elige B |
 | 11/11/2026 | Todos los datos en un único `data.js`, separados del código | Si elige A, Julieta edita un solo archivo; si elige B, solo se reemplaza de dónde vienen los datos, el resto queda igual | Implementado |
 | 11/11/2026 | Pedido de productos con varios ítems (como Dulce Marga); tiradas con botón directo | En la tienda se suelen comprar varias cosas; una tirada se reserva de a una | Implementado, a validar con ella |
-| 11/11/2026 | Paleta provisoria violeta/crema/dorado | No tenemos su Instagram todavía | Provisorio |
+| 11/11/2026 | Paleta provisoria violeta/crema/dorado | No tenemos su Instagram todavía | Reemplazada |
+| 11/11/2026 | Diseño tomado del catálogo PDF (bordó, dorado, Playfair + Inter, pastel por colección) | Es la identidad que ella ya usa | Implementado |
+| 11/11/2026 | Pedido con barra fija abajo + panel; velas y biosahumerios con selector de color/aroma | 46 productos: el pedido tiene que estar siempre a mano; el mensaje incluye la opción elegida | Implementado |
+| 11/11/2026 | Tiradas ocultas | El PDF no las trae | Hasta que Melisa confirme |
+| 11/11/2026 | No publicar fotos de Aurora/Guardiana/Santuario | Derechos dudosos | Hasta confirmar |
+| 11/11/2026 | Material de la clienta (PDF, info/) fuera del repo con .gitignore | El PDF pesa 27 MB y es material interno | Implementado |
