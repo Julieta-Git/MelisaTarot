@@ -334,8 +334,9 @@ const SERVICIOS = [
 const PREGUNTAS = [
   { pregunta: "¿Cómo hago un pedido?", respuesta: "Elegí tu producto y tu aroma o color, sumalo al pedido y tocá «Enviar pedido por WhatsApp». Te confirmo la disponibilidad por ahí." },
   { pregunta: "¿Cómo reservo una lectura?", respuesta: "Tocá «Reservar» en la lectura que quieras y se abre WhatsApp con el pedido escrito. Ahí coordinamos día y horario." },
-  { pregunta: "¿Cómo recibo mi lectura?", respuesta: null },
-  { pregunta: "¿Cómo pago?", respuesta: null },
+  { pregunta: "¿Cómo recibo mi lectura?", respuesta: "Las lecturas se hacen por audio, con fotos de las cartas. La extensión depende de cada lectura y de cuántas preguntas tenga: suele llevar entre 40 minutos y una hora." },
+  { pregunta: "¿Cómo son las videollamadas?", respuesta: "Las videollamadas (como la Sesión Personalizada) se coordinan por WhatsApp." },
+  { pregunta: "¿Cómo pago?", respuesta: "Por transferencia al alias Melisatarot.mp, a nombre de Ximena Melisa Perez, o por Rapipago. Por favor, recordá mandar tu comprobante. 🤍" },
   { pregunta: "¿Hacen envíos?", respuesta: null },
   { pregunta: "¿Puedo retirar en persona?", respuesta: null },
   { pregunta: "¿Siempre hay todos los aromas?", respuesta: "Los productos y los aromas pueden variar según la disponibilidad. Consultá antes de pedir." },
