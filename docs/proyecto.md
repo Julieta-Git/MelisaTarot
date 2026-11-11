@@ -5,7 +5,7 @@ _Arranque del proyecto: 11/11/2026. La clienta aceptó la propuesta de la web. P
 **Estado (11/11/2026):** catálogo real cargado desde su PDF "Melisa Tarot · Cristales, aromas y rituales" (46 productos con precio, fotos y textos). Diseño adaptado al PDF: bordó #280100, dorado #dac473, Playfair Display + Inter, fondos pastel por colección. Faltan los datos de la sección 2.
 
 ## Datos confirmados por Melisa (11/11/2026, vía Julieta)
-- Pago: transferencia al alias Melisatarot.mp (titular Ximena Melisa Perez) o Rapipago; mandar comprobante. (Julieta escribió "Rappi Pago": confirmar que es Rapipago.)
+- Pago: transferencia al alias Melisatarot.mp (titular Ximena Melisa Perez) o Rapipago; mandar comprobante. (confirmado).
 - Lecturas: por audio con fotos; entre 40 min y 1 h según la cantidad de preguntas.
 - Videollamadas: se coordinan por WhatsApp.
 - En su catálogo usa la pantera en distintos colores para agrupar tiradas. Probar ese sistema de colores en la web (falta que pase las imágenes o los colores).
