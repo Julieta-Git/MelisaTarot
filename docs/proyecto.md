@@ -73,7 +73,7 @@ Leído desde el WhatsApp Web de Julieta (solo lectura, sesión cerrada al termin
 **Del catálogo PDF (nuevo)**
 - ⭐ Páginas que faltan en el PDF: Difusores colgantes y esferas, Refills, Aromas (productos y precios).
 - ⭐ Precio de los 6 combos (en la web dicen "Precio a consultar").
-- ⭐ Ciudad, envíos, retiro y medios de pago (el PDF no lo dice; código 370 sugiere Formosa).
+- ✓ Ciudad: Formosa Capital. ✓ Pagos: alias o Rapipago. ⭐ Falta: envíos y retiro de productos.
 - ✓ Tiradas: ya cargadas desde el catálogo de WhatsApp. Falta: cómo se entregan (audio, video, escrito), tiempos y si las colecciones armadas están bien.
 - Fotos originales en alta (las del PDF tienen 300-500 px) y logo en alta o SVG.
 - Origen y permiso de las fotos de Roll On Aurora, Guardiana y Santuario (parecen de banco o IA; no se publicaron).

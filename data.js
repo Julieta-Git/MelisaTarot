@@ -19,7 +19,7 @@ const SITIO = {
   telefonoVisible: "370 437-7078",
   instagram: "melisatarot.777",
   email: "melisatarot.fsa@gmail.com",
-  ciudad: null,                     // el PDF no lo dice (¿Formosa?) — A CONFIRMAR
+  ciudad: "Formosa Capital",        // confirmado por Julieta 11/11/2026
   mostrarPrecios: true,
   mostrarTiradas: true,             // tiradas tomadas de su catálogo de WhatsApp Business (11/11/2026)
   aviso: "Los productos y los aromas pueden variar según la disponibilidad. Consultá antes de pedir.",
