@@ -25,6 +25,14 @@ const SITIO = {
   aviso: "Los productos y los aromas pueden variar según la disponibilidad. Consultá antes de pedir.",
 };
 
+// Sección "Sobre mí". foto: ruta a la imagen (ej. "assets/fotos/melisa.webp").
+// texto: lista de párrafos. Lo que está en null muestra "A confirmar".
+const SOBRE_MI = {
+  titulo: "Hola, soy Melisa",
+  foto: null,   // pendiente: foto de Melisa (Julieta la consigue)
+  texto: null,  // pendiente: descripción escrita por Melisa o aprobada por ella
+};
+
 // fondo: color pastel de cada colección en el PDF
 const CATEGORIAS = [
   { id: "roll-on", nombre: "Roll On", fondo: "#fff0b9" },

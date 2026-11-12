@@ -41,9 +41,10 @@ img { max-width: 100%; height: auto; display: block; }
 .marca { display: flex; align-items: center; gap: 0.6rem; font: 600 1.3rem "Playfair Display", serif; text-decoration: none; }
 .marca img { width: 40px; height: 40px; border-radius: 50%; }
 .menu { display: flex; gap: 1.2rem; font-size: 0.92rem; }
-.menu a { text-decoration: none; opacity: 0.85; }
+.menu a { text-decoration: none; opacity: 0.85; white-space: nowrap; }
 .menu a:hover { opacity: 1; color: var(--dorado); }
 @media (max-width: 480px) { .menu { gap: 0.8rem; font-size: 0.85rem; } .marca span { font-size: 1.1rem; } .marca img { width: 34px; height: 34px; } }
+@media (max-width: 430px) { .marca span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .menu { gap: 0.7rem; } }
 
 /* Hero */
 .hero { background: radial-gradient(circle at 75% 40%, #4a1206 0%, var(--bordo) 60%); color: var(--crema); display: grid; grid-template-columns: 1.2fr 1fr; align-items: center; gap: 2rem; padding: clamp(3rem, 9vw, 6.5rem) clamp(16px, 6vw, 80px); }
@@ -193,3 +194,13 @@ img { max-width: 100%; height: auto; display: block; }
 .tirada-texto details { margin: 0 0 0.6rem; }
 .tirada-texto summary { cursor: pointer; color: var(--dorado); font-weight: 600; font-size: 0.88rem; padding: 0.3rem 0; }
 .tirada-texto details ol { margin-top: 0.4rem; }
+
+/* Sobre mí */
+.sobre-mi { background: var(--crema); }
+.sobre-mi-grilla { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.sobre-mi-foto { aspect-ratio: 4 / 5; width: min(100%, 420px); justify-self: center; border-radius: 999px 999px var(--radio) var(--radio); overflow: hidden; background: #f6ecdc; border: 1.5px solid var(--dorado); box-shadow: 0 24px 50px -30px rgba(40, 1, 0, 0.7); display: grid; place-items: center; }
+.sobre-mi-foto img { width: 100%; height: 100%; object-fit: cover; }
+.sobre-mi-texto h2 { margin-top: 0; }
+.sobre-mi-texto p:not(.etiqueta) { color: var(--tinta-suave); max-width: 60ch; }
+.sobre-mi-texto .btn { margin-top: 0.6rem; }
+@media (max-width: 760px) { .sobre-mi-grilla { grid-template-columns: 1fr; } .sobre-mi-foto { width: min(100%, 320px); } }

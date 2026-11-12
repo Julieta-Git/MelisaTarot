@@ -289,6 +289,19 @@ document.addEventListener("change", (e) => {
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") abrirPedido(false); });
 document.getElementById("pedido").addEventListener("click", (e) => { if (e.target.id === "pedido") abrirPedido(false); });
 
+function renderSobreMi() {
+  document.getElementById("sobre-mi-titulo").textContent = SOBRE_MI.titulo;
+  document.getElementById("sobre-mi-foto").innerHTML = SOBRE_MI.foto
+    ? `<img src="${SOBRE_MI.foto}" alt="${esc(SOBRE_MI.titulo.replace(/^Hola, soy /, ""))}" loading="lazy" width="420" height="525">`
+    : PENDIENTE("Foto de Melisa: a confirmar");
+  const cuerpo = SOBRE_MI.texto
+    ? SOBRE_MI.texto.map((t) => `<p>${esc(t)}</p>`).join("")
+    : `<p>${PENDIENTE("Descripción de Melisa: a confirmar")}</p>`;
+  document.getElementById("sobre-mi-cuerpo").innerHTML = cuerpo +
+    `<a class="btn" href="https://instagram.com/${SITIO.instagram}" target="_blank" rel="noopener">Seguime en Instagram</a>`;
+}
+
+renderSobreMi();
 renderFiltros();
 renderProductos();
 renderPedido();
