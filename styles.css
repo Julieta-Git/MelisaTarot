@@ -221,3 +221,21 @@ main:focus { outline: none; }
 .preguntas summary::-webkit-details-marker, .tirada-texto summary::-webkit-details-marker { display: none; }
 .preguntas summary::before, .tirada-texto summary::before { content: "▸"; flex: none; transition: transform 0.2s; }
 .preguntas details[open] > summary::before, .tirada-texto details[open] > summary::before { transform: rotate(90deg); }
+
+/* Franja de confianza */
+.confianza { background: var(--bordo-2); color: var(--crema); padding: 1.4rem clamp(16px, 5vw, 64px); border-top: 1px solid rgba(218, 196, 115, 0.25); border-bottom: 1px solid rgba(218, 196, 115, 0.25); }
+.confianza-lista { list-style: none; margin: 0 auto; padding: 0; max-width: 1180px; display: grid; gap: 1rem 1.5rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.confianza-lista li { display: grid; grid-template-columns: auto 1fr; column-gap: 0.7rem; align-items: start; }
+.confianza-icono { grid-row: span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(218, 196, 115, 0.5); color: var(--dorado); font-size: 1rem; }
+.confianza-lista strong { font-weight: 600; font-size: 0.95rem; }
+.confianza-lista span:not(.confianza-icono) { font-size: 0.85rem; color: rgba(251, 246, 238, 0.75); }
+.confianza-lista a { color: var(--dorado); text-underline-offset: 3px; }
+@media (max-width: 900px) { .confianza-lista { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .confianza-lista { grid-template-columns: 1fr; gap: 0.8rem; } }
+
+/* Panel: pago y ayuda si WhatsApp no abre */
+.pedido-pago { margin: 0 0 0.9rem; font-size: 0.9rem; color: var(--tinta-suave); }
+.pedido-ayuda { margin-top: 1rem; padding: 0.9rem 1rem; border-radius: 16px; background: #f3eadb; }
+.pedido-ayuda p { margin: 0 0 0.6rem; font-weight: 600; }
+.pedido-ayuda-acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+.btn-borde-oscuro { min-height: 44px; padding: 0.4rem 1.1rem; background: transparent; border-color: var(--bordo); color: var(--bordo); font-size: 0.95rem; }

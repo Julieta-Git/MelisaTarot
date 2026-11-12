@@ -44,9 +44,34 @@ function toast(msg) {
   toast.id = setTimeout(() => t.classList.remove("visible"), 2600);
 }
 
+const linkWhatsApp = (texto) => `https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}`;
+// En el navegador interno de Instagram/Facebook abrir otra pestaña falla seguido:
+// ahí se navega en la misma pestaña (el pedido queda guardado para cuando vuelva).
+const navegadorInterno = /Instagram|FBAN|FBAV|FB_IAB/i.test(navigator.userAgent);
+
 function abrirWhatsApp(texto) {
-  if (!SITIO.whatsapp) return toast("Falta cargar el número de WhatsApp");
-  window.open(`https://wa.me/${SITIO.whatsapp}?text=${encodeURIComponent(texto)}`, "_blank", "noopener");
+  if (!SITIO.whatsapp) { toast("Falta cargar el número de WhatsApp"); return null; }
+  const url = linkWhatsApp(texto);
+  if (navegadorInterno) { location.href = url; return url; }
+  window.open(url, "_blank", "noopener");
+  return url;
+}
+
+// ---------- Pedido guardado en este navegador ----------
+const CLAVE_PEDIDO = "melisa-tarot-pedido";
+function guardarPedido() {
+  try { localStorage.setItem(CLAVE_PEDIDO, JSON.stringify(pedido)); } catch (e) { /* sin almacenamiento: el pedido vive mientras la página esté abierta */ }
+}
+function recuperarPedido() {
+  try {
+    const guardado = JSON.parse(localStorage.getItem(CLAVE_PEDIDO) || "{}");
+    Object.entries(guardado).forEach(([clave, cant]) => {
+      const [id, opcion] = clave.split("|");
+      const p = PRODUCTOS.find((x) => x.id === id && x.visible !== false);
+      const opcionOk = !opcion || (p && p.opciones && p.opciones.valores.some((v) => v.nombre === opcion));
+      if (p && opcionOk && Number.isInteger(cant) && cant > 0) pedido[clave] = cant;
+    });
+  } catch (e) { /* ignorar un pedido guardado que no se pueda leer */ }
 }
 
 // ---------- Contacto y pie ----------
@@ -263,19 +288,40 @@ function renderPedido() {
   barraTotal.hidden = !SITIO.mostrarPrecios;
   barraTotal.textContent = pesos(total);
   document.getElementById("barra-pedido").hidden = unidades === 0;
+  guardarPedido();
+}
+
+function textoPedido() {
+  const lineas = lineasPedido();
+  const { sinPrecio, total } = totales(lineas);
+  const conPrecio = (l) => SITIO.mostrarPrecios && l.precio != null ? ` (${pesos(l.precio)} c/u)` : "";
+  return `¡Hola Melisa! Quiero hacer este pedido:\n` +
+    lineas.map((l) => `• ${l.cant} × ${l.texto}${conPrecio(l)}`).join("\n") +
+    (SITIO.mostrarPrecios ? `\nTotal estimado: ${pesos(total)}${sinPrecio ? " + productos a consultar" : ""}` : "") +
+    `\n¿Me confirmás la disponibilidad?\n\nMi nombre: \nRetiro o envío: `;
 }
 
 function enviarPedido() {
-  const lineas = lineasPedido();
-  if (!lineas.length) return toast("Sumá algún producto primero");
-  const { sinPrecio, total } = totales(lineas);
-  const conPrecio = (l) => SITIO.mostrarPrecios && l.precio != null ? ` (${pesos(l.precio)} c/u)` : "";
-  abrirWhatsApp(
-    `¡Hola Melisa! Quiero hacer este pedido:\n` +
-    lineas.map((l) => `• ${l.cant} × ${l.texto}${conPrecio(l)}`).join("\n") +
-    (SITIO.mostrarPrecios ? `\nTotal estimado: ${pesos(total)}${sinPrecio ? " + productos a consultar" : ""}` : "") +
-    `\n¿Me confirmás la disponibilidad?`
-  );
+  if (!lineasPedido().length) return toast("Sumá algún producto primero");
+  const texto = textoPedido();
+  const url = abrirWhatsApp(texto);
+  if (!url) return;
+  document.getElementById("pedido-link").href = url;
+  document.getElementById("pedido-ayuda").hidden = false;
+}
+
+async function copiarPedido() {
+  const texto = textoPedido();
+  try {
+    await navigator.clipboard.writeText(texto);
+  } catch (e) {
+    const area = Object.assign(document.createElement("textarea"), { value: texto });
+    area.setAttribute("readonly", ""); area.style.position = "fixed"; area.style.opacity = "0";
+    document.getElementById("pedido").appendChild(area); area.select();
+    try { document.execCommand("copy"); } catch (e2) { /* nada más que hacer */ }
+    area.remove();
+  }
+  toast("Pedido copiado ✓");
 }
 
 // ---------- Panel del pedido (diálogo) ----------
@@ -290,6 +336,7 @@ function abrirPedido(abrir) {
   document.body.classList.toggle("sin-scroll", abrir);
   fondoDialogo().forEach((el) => { el.inert = abrir; });
   if (abrir) {
+    document.getElementById("pedido-ayuda").hidden = true;
     focoAntes = document.activeElement;
     // Esperar a que el panel deje de estar oculto para poder darle el foco
     requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById("cerrar-pedido").focus()));
@@ -350,7 +397,7 @@ document.addEventListener("click", (e) => {
   if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); }
   if (d.tirada) {
     const t = TIRADAS.find((x) => x.id === d.tirada);
-    abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?`);
+    abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?\n\nMi nombre: \nTema o pregunta: `);
   }
   if (d.servicio) {
     const sv = SERVICIOS.find((x) => x.id === d.servicio);
@@ -361,6 +408,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "ver-pedido") abrirPedido(true);
   if (b.id === "cerrar-pedido") abrirPedido(false);
   if (b.id === "pedido-enviar") enviarPedido();
+  if (b.id === "pedido-copiar") copiarPedido();
 });
 
 document.addEventListener("change", (e) => {
@@ -404,4 +452,4 @@ function renderSobreMi() {
 seguro("sobre mí", renderSobreMi);
 seguro("filtros de la tienda", renderFiltros);
 seguro("tienda", renderProductos);
-seguro("pedido", renderPedido);
+seguro("pedido", () => { recuperarPedido(); renderPedido(); });
