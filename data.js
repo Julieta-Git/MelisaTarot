@@ -194,10 +194,10 @@ const PRODUCTOS = [
       { nombre: "Violeta", texto: "Transmutación. Transforma energías densas en vibraciones elevadas, ayudando a liberar bloqueos y elevar la conciencia." },
       { nombre: "Azul", texto: "Protección. Simboliza fuerza interior y calma, creando un escudo energético contra influencias negativas." },
       { nombre: "Amarillo", texto: "Confianza. Simboliza el poder personal y la seguridad, iluminando el camino hacia el éxito y la alegría." },
-      { nombre: "Verde", texto: "Renovación. Simboliza el crecimiento, la armonía y la conexión con la naturaleza, promoviendo el equilibrio emocional." },
-      { nombre: "Rosa coral", texto: "Amor. Representa el amor propio y la conexión emocional con los demás, promoviendo la compasión y la empatía." },
+      { nombre: "Verde", foto: F("velas-alquimicas-verde"), texto: "Renovación. Simboliza el crecimiento, la armonía y la conexión con la naturaleza, promoviendo el equilibrio emocional." },
+      { nombre: "Rosa coral", foto: F("velas-alquimicas"), texto: "Amor. Representa el amor propio y la conexión emocional con los demás, promoviendo la compasión y la empatía." },
       { nombre: "Lila", texto: "Intuición. Fomenta la calma y la claridad espiritual. Conecta con planos superiores y amplifica la percepción." },
-      { nombre: "Negro", texto: "Liberación. Absorbe y disuelve energías estancadas, ayudando a cerrar ciclos y liberar cargas emocionales." },
+      { nombre: "Negro", foto: F("velas-alquimicas-negro"), texto: "Liberación. Absorbe y disuelve energías estancadas, ayudando a cerrar ciclos y liberar cargas emocionales." },
     ] } },
 
   // ---------- BIOSAHUMERIOS ----------

@@ -275,7 +275,15 @@ document.addEventListener("change", (e) => {
   if (!sel) return;
   const p = PRODUCTOS.find((x) => x.id === sel.dataset.opcion);
   const texto = document.querySelector(`[data-opcion-texto="${p.id}"]`);
-  if (texto) texto.textContent = p.opciones.valores.find((v) => v.nombre === sel.value).texto;
+  const op = p.opciones.valores.find((v) => v.nombre === sel.value);
+  if (texto) texto.textContent = op.texto;
+  // Si la opción elegida (por ejemplo un color de vela) tiene foto propia, se muestra;
+  // si no, vuelve la foto general del producto.
+  const img = document.querySelector(`#producto-${p.id} .producto-foto img`);
+  if (img && p.foto) {
+    img.src = op.foto || p.foto;
+    img.alt = op.foto ? `${p.nombre} (${op.nombre})` : p.nombre;
+  }
 });
 
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") abrirPedido(false); });
