@@ -156,6 +156,7 @@ Leído desde el WhatsApp Web de Julieta (solo lectura, sesión cerrada al termin
 | 11/11/2026 | Paleta provisoria violeta/crema/dorado | No tenemos su Instagram todavía | Reemplazada |
 | 11/11/2026 | Diseño tomado del catálogo PDF (bordó, dorado, Playfair + Inter, pastel por colección) | Es la identidad que ella ya usa | Implementado |
 | 11/11/2026 | Pedido con barra fija abajo + panel; velas y biosahumerios con selector de color/aroma | 46 productos: el pedido tiene que estar siempre a mano; el mensaje incluye la opción elegida | Implementado |
+| 12/11/2026 | Auditoría UX/front/diseño; tanda 1 aplicada (robustez de data.js, precio por opción, diálogo accesible, contraste, botones de marca, fotos 4:5 con fondo neutro, marca visible en celu, vista previa al compartir) | Informe en auditoria-2026-11-12/ de la carpeta del cliente; tandas 2 y 3 quedan para después | Implementado |
 | 11/11/2026 | Tiradas ocultas | El PDF no las trae | Reemplazada |
 | 11/11/2026 | Tiradas, curso y eventos desde el catálogo de WhatsApp; cada tirada con botón "Reservar" directo a WhatsApp, preguntas libres en una tabla | Una lectura se reserva de a una; 9 tarjetas iguales de preguntas ensuciaban la página | Implementado |
 | 11/11/2026 | Preguntas de cada tirada plegadas en "Ver qué incluye" | 32 tiradas largas hacían la página eterna en el celular | Implementado |

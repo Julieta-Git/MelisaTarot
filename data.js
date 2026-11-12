@@ -12,7 +12,7 @@
 // =====================================================================
 
 const SITIO = {
-  marca: "Melisa Tarot",
+  marca: "Melisa Tarot",   // marca, lema y bajada: referencia del PDF; los textos visibles están en index.html
   lema: "Cristales, aromas y rituales",
   bajada: "Cristales, aromas y rituales hechos a mano, con intención.",
   whatsapp: "5493704377078",        // +54 9 370 437-7078 (del PDF)
@@ -221,8 +221,8 @@ const PRODUCTOS = [
   { id: "mazo-sibilla", nombre: "Sibilla Italiana", categoria: "mazo", precio: 24000, foto: null,
     descripcion: "Mazo de cartas Sibilla Italiana.",
     opciones: { titulo: "Presentación", valores: [
-      { nombre: "Sin manual personalizado", texto: "$24.000" },
-      { nombre: "Con manual personalizado", texto: "$33.999", precio: 33999 },
+      { nombre: "Sin manual personalizado" },
+      { nombre: "Con manual personalizado", precio: 33999 },
     ] } },
 
   // ---------- REGALOS Y COMBOS (sin precio en el PDF — A CONFIRMAR) ----------

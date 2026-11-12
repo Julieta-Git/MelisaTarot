@@ -7,29 +7,50 @@
   <meta name="description" content="Tiradas y lecturas de tarot, curso para aprender tarot y tienda holística: roll-ons con cristales, sprays áuricos, brumas, sales, velas y biosahumerios. Reservas y pedidos por WhatsApp.">
   <meta property="og:title" content="Melisa Tarot · Cristales, aromas y rituales">
   <meta property="og:description" content="Cristales, aromas y rituales hechos a mano, con intención.">
-  <meta property="og:image" content="assets/logo-pantera.webp">
+  <!-- Al publicar: reemplazar las rutas de og:image por la URL completa del sitio (WhatsApp e Instagram la piden absoluta) y sumar og:url y canonical -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_AR">
+  <meta property="og:site_name" content="Melisa Tarot">
+  <meta property="og:image" content="assets/og-melisa-tarot.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#280100">
-  <link rel="icon" href="assets/logo-pantera.webp" type="image/webp">
+  <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Melisa Tarot",
+    "description": "Tiradas de tarot, curso para aprender tarot y tienda holística hecha a mano.",
+    "telephone": "+54 9 370 437-7078",
+    "email": "melisatarot.fsa@gmail.com",
+    "address": { "@type": "PostalAddress", "addressLocality": "Formosa", "addressRegion": "Formosa", "addressCountry": "AR" },
+    "sameAs": ["https://instagram.com/melisatarot.777"]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="saltar" href="#inicio">Saltar al contenido</a>
   <header class="top">
     <a class="marca" href="#inicio"><img src="assets/logo-pantera.webp" alt="" width="40" height="40"><span>Melisa Tarot</span></a>
     <nav class="menu" aria-label="Secciones">
       <a href="#tiradas" data-tiradas>Tiradas</a>
       <a href="#tienda">Tienda</a>
-      <a href="#sobre-mi">Sobre mí</a>
+      <a href="#sobre-mi" class="menu-extra">Sobre mí</a>
       <a href="#como-pedir">Cómo pedir</a>
     </nav>
   </header>
 
-  <main id="inicio">
+  <main id="inicio" tabindex="-1">
     <section class="hero">
       <div class="hero-texto">
-        <p class="etiqueta">✦ Tu tarotista de confianza</p>
+        <p class="etiqueta">✦ Melisa · Tarot en Formosa Capital</p>
         <h1>Tarot, cristales <em>y rituales</em></h1>
         <p class="bajada">Lecturas de tarot personalizadas y una tienda holística hecha a mano, con intención: roll-ons con cristales, sprays áuricos, brumas, sales, velas y biosahumerios.</p>
         <div class="acciones">
@@ -53,6 +74,10 @@
     </section>
 
     <section id="servicios" class="seccion servicios" data-tiradas>
+      <div class="encabezado">
+        <p class="etiqueta">✦ Curso y eventos</p>
+        <h2>Más formas de trabajar conmigo</h2>
+      </div>
       <div class="grilla-servicios" id="grilla-servicios"></div>
     </section>
 
@@ -69,7 +94,7 @@
 
     <section id="guia" class="seccion guia">
       <div class="encabezado">
-        <p class="etiqueta">✧ Mini guía</p>
+        <p class="etiqueta">✦ Mini guía</p>
         <h2>¿Qué necesitás hoy?</h2>
         <p>Elegí cómo te sentís y te muestro los productos para acompañarte.</p>
       </div>
@@ -78,7 +103,7 @@
 
     <section id="tienda" class="seccion tienda">
       <div class="encabezado">
-        <p class="etiqueta">Colecciones</p>
+        <p class="etiqueta">✦ Hecho a mano, con intención</p>
         <h2>La tienda</h2>
       </div>
       <div class="filtros" id="filtros" role="group" aria-label="Filtrar por colección"></div>
@@ -88,8 +113,8 @@
 
     <section id="como-pedir" class="seccion como-pedir">
       <div class="encabezado">
-        <p class="etiqueta">Pedí el tuyo conmigo</p>
-        <h2>¿Llegaste hasta acá? Entonces ya tenés una favorita</h2>
+        <p class="etiqueta">✦ Cómo pedir</p>
+        <h2>En 3 pasos y por WhatsApp</h2>
       </div>
       <ol class="pasos">
         <li><strong>Elegí tu lectura o tus productos.</strong> Las tiradas se reservan con su botón; los productos se suman al pedido.</li>
@@ -100,7 +125,7 @@
     </section>
 
     <section id="preguntas" class="seccion">
-      <div class="encabezado"><p class="etiqueta">Preguntas frecuentes</p><h2>Antes de pedir</h2></div>
+      <div class="encabezado"><p class="etiqueta">✦ Preguntas frecuentes</p><h2>Antes de pedir</h2></div>
       <div class="preguntas" id="lista-preguntas"></div>
     </section>
   </main>
@@ -116,26 +141,27 @@
 
   <div class="barra-pedido" id="barra-pedido" hidden>
     <button type="button" id="ver-pedido">
-      <span>Tu pedido · <b id="barra-cant">0</b></span>
+      <span id="barra-cant">0 productos</span>
       <span id="barra-total">$0</span>
-      <span class="barra-ver">Ver y enviar</span>
+      <span class="barra-ver">Ver pedido</span>
     </button>
   </div>
 
-  <div class="pedido" id="pedido" aria-hidden="true" role="dialog" aria-labelledby="pedido-titulo">
+  <div class="pedido" id="pedido" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="pedido-titulo">
     <div class="pedido-panel">
       <div class="pedido-cabecera">
         <h2 id="pedido-titulo">Tu pedido</h2>
-        <button type="button" id="cerrar-pedido" class="cerrar" aria-label="Cerrar">✕</button>
+        <button type="button" id="cerrar-pedido" class="cerrar" aria-label="Cerrar el pedido">✕</button>
       </div>
       <ul id="pedido-lista"></ul>
-      <p class="pedido-total">Total estimado: <strong id="pedido-total">$0</strong></p>
+      <p class="pedido-total" id="pedido-total-linea" aria-live="polite">Total estimado: <strong id="pedido-total">$0</strong></p>
       <button type="button" class="btn btn-whatsapp" id="pedido-enviar">Enviar pedido por WhatsApp</button>
       <p class="nota">Te confirmo disponibilidad, pago y entrega por chat.</p>
     </div>
   </div>
 
   <div class="toast" id="toast" role="status"></div>
+  <p class="solo-lector" id="anuncio" aria-live="polite"></p>
 
   <script src="data.js"></script>
   <script src="main.js"></script>
