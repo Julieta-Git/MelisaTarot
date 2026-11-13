@@ -115,7 +115,7 @@ function renderTiradas() {
         <h3>${esc(t.nombre)}</h3>
         ${t.detalle ? `<p class="tirada-detalle">${esc(t.detalle)}</p>` : ""}
         <div class="tirada-texto recortado">${textoConLista(t.descripcion)}</div>
-        <button type="button" class="leer-mas" data-leer-mas aria-expanded="false" hidden>Leer más</button>
+        <button type="button" class="leer-mas" data-leer-mas data-ver-tirada="${esc(t.id)}" hidden>Leer más</button>
         <div class="tirada-pie">
           <p class="precio">${precioTexto(t.precio)}</p>
           <button type="button" class="btn btn-reservar" data-tirada="${esc(t.id)}" aria-label="Reservar ${esc(t.nombre)} por WhatsApp">Reservar</button>
@@ -196,25 +196,26 @@ function opcionElegida(p) {
 const tarjetasAbiertas = () => matchMedia("(min-width: 700px)").matches;
 const RITUALES = ["vela", "aceite", "biosahumerio"];
 
-function tarjeta(p) {
+function tarjeta(p, grande = false) {
   const chips = [p.aroma && `Aroma ${p.aroma}`, p.ml, p.chakra && `Chakra ${p.chakra}`, p.detalle].filter(Boolean);
   const op = opcionElegida(p);
   const foto = (op && op.foto) || p.foto;
   const precio = op && op.precio != null ? op.precio : p.precio;
   return `
-  <article class="producto" id="producto-${esc(p.id)}">
+  <article class="producto${grande ? " producto-grande" : ""}"${grande ? "" : ` id="producto-${esc(p.id)}"`} data-producto="${esc(p.id)}">
     <div class="producto-foto">
+      ${grande ? "" : `<button type="button" class="ver-detalle" data-ver="${esc(p.id)}" aria-label="Ver ${esc(p.nombre)} en grande"></button>`}
       ${foto
-        ? `<img src="${esc(foto)}" alt="${esc(p.nombre + (op && op.foto ? ` (${op.nombre})` : ""))}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'sin-foto',textContent:'Foto próximamente'}))">`
+        ? `<img src="${esc(foto)}" alt="${esc(p.nombre + (op && op.foto ? ` (${op.nombre})` : ""))}" ${grande ? "" : 'loading="lazy" '}onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'sin-foto',textContent:'Foto próximamente'}))">`
         : `<span class="sin-foto">Foto próximamente</span>`}
       ${p.masVendido ? '<span class="badge">★ Más vendido</span>' : ""}
     </div>
     <div class="producto-info">
-      <h4>${esc(p.nombre)}${p.alias ? ` <small>o ${esc(p.alias)}</small>` : ""}</h4>
+      <${grande ? 'h2 id="detalle-titulo"' : "h4"}>${esc(p.nombre)}${p.alias ? ` <small>o ${esc(p.alias)}</small>` : ""}</${grande ? "h2" : "h4"}>
       ${chips.length ? `<ul class="chips">${chips.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
       ${p.ml === null ? `<p>${PENDIENTE("Tamaño a confirmar")}</p>` : ""}
       ${p.incluye ? `<p class="incluye"><strong>Incluye:</strong> ${p.incluye.map(esc).join(" + ")}</p>` : ""}
-      <details class="producto-mas"${tarjetasAbiertas() ? " open" : ""}>
+      <details class="producto-mas"${grande || tarjetasAbiertas() ? " open" : ""}>
         <summary>Ver más</summary>
         <p class="descripcion">${esc(p.descripcion)}</p>
         ${p.beneficios ? `<p class="beneficios">${p.beneficios.map(esc).join(" · ")}</p>` : ""}
@@ -345,29 +346,75 @@ async function copiarPedido() {
 }
 
 // ---------- Panel del pedido (diálogo) ----------
-let focoAntes = null;
 const fondoDialogo = () => document.querySelectorAll("body > header, body > main, body > footer, #barra-pedido");
+const focoAntes = {};
+const modalAbierto = () => document.querySelector(".pedido.abierto, .detalle.abierto");
 
-function abrirPedido(abrir) {
-  const panel = document.getElementById("pedido");
+// Abre o cierra un diálogo (pedido o vista ampliada): foco, fondo inerte y scroll
+function abrirModal(id, abrir, idFoco) {
+  const panel = document.getElementById(id);
   if (abrir === panel.classList.contains("abierto")) return;
+  if (abrir) { const otro = modalAbierto(); if (otro) abrirModal(otro.id, false); }
   panel.classList.toggle("abierto", abrir);
   panel.setAttribute("aria-hidden", String(!abrir));
   document.body.classList.toggle("sin-scroll", abrir);
   fondoDialogo().forEach((el) => { el.inert = abrir; });
   if (abrir) {
-    document.getElementById("pedido-ayuda").hidden = true;
-    focoAntes = document.activeElement;
+    focoAntes[id] = document.activeElement;
     // Esperar a que el panel deje de estar oculto para poder darle el foco
-    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById("cerrar-pedido").focus()));
-  } else if (focoAntes && document.contains(focoAntes)) {
-    focoAntes.focus();
+    requestAnimationFrame(() => requestAnimationFrame(() => document.getElementById(idFoco).focus()));
+  } else if (focoAntes[id] && document.contains(focoAntes[id])) {
+    focoAntes[id].focus();
   }
 }
 
+function abrirPedido(abrir) {
+  if (abrir) document.getElementById("pedido-ayuda").hidden = true;
+  abrirModal("pedido", abrir, "cerrar-pedido");
+}
+
+function abrirDetalle(abrir) {
+  abrirModal("detalle", abrir, "cerrar-detalle");
+  if (!abrir) document.getElementById("detalle-cuerpo").innerHTML = "";
+}
+
+function verProducto(id) {
+  const p = PRODUCTOS.find((x) => x.id === id);
+  if (!p) return;
+  document.getElementById("detalle-cuerpo").innerHTML = tarjeta(p, true);
+  abrirDetalle(true);
+}
+
+function verTirada(id) {
+  const t = TIRADAS.find((x) => x.id === id);
+  if (!t) return;
+  document.getElementById("detalle-cuerpo").innerHTML = `
+    <article class="tirada tirada-grande${t.destacada ? " destacada" : ""}">
+      <p class="tirada-col">${esc(coleccion(t.coleccion).nombre)}${t.top ? ' <span class="tirada-top">★ Más pedida</span>' : ""}</p>
+      <h2 id="detalle-titulo">${esc(t.nombre)}</h2>
+      ${t.detalle ? `<p class="tirada-detalle">${esc(t.detalle)}</p>` : ""}
+      <div class="tirada-texto">${textoConLista(t.descripcion).replace("<details>", "<details open>")}</div>
+      <p class="tirada-nota">La lectura te llega por audio, con fotos de tus cartas.</p>
+      <div class="tirada-pie">
+        <p class="precio">${precioTexto(t.precio)}</p>
+        <button type="button" class="btn btn-reservar" data-tirada="${esc(t.id)}">Reservar por WhatsApp</button>
+      </div>
+    </article>`;
+  abrirDetalle(true);
+}
+
+// Tocar cualquier parte de una tarjeta (menos sus botones y selectores) la abre en grande
+document.addEventListener("click", (e) => {
+  if (e.target.closest("button, a, select, label, summary, input, .detalle")) return;
+  const prod = e.target.closest("#productos .producto");
+  if (prod) return verProducto(prod.dataset.producto);
+  const tir = e.target.closest("#grilla-tiradas .tirada:not(.tirada-tabla)");
+  if (tir) verTirada(tir.id.replace(/^tirada-/, ""));
+});
+
 function atraparFoco(e) {
-  const panel = document.getElementById("pedido");
-  if (e.key !== "Tab" || !panel.classList.contains("abierto")) return;
+  const panel = modalAbierto();
+  if (e.key !== "Tab" || !panel) return;
   const focos = [...panel.querySelectorAll("button:not([disabled]), a[href]")];
   if (!focos.length) return;
   const primero = focos[0], ultimo = focos[focos.length - 1];
@@ -415,12 +462,9 @@ document.addEventListener("click", (e) => {
   if (d.mas) { pedido[d.mas]++; renderPedido(); }
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
   if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); marcarRecortes(); }
-  if ("leerMas" in d) {
-    const texto = b.previousElementSibling;
-    const abierto = texto.classList.toggle("recortado") === false;
-    b.textContent = abierto ? "Leer menos" : "Leer más";
-    b.setAttribute("aria-expanded", String(abierto));
-  }
+  if (d.ver) verProducto(d.ver);
+  if (d.verTirada) verTirada(d.verTirada);
+  if (b.id === "cerrar-detalle") abrirDetalle(false);
   if (d.tirada) {
     const t = TIRADAS.find((x) => x.id === d.tirada);
     abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?\n\nMi nombre: \nTema o pregunta: `);
@@ -443,24 +487,29 @@ document.addEventListener("change", (e) => {
   const p = PRODUCTOS.find((x) => x.id === sel.dataset.opcion);
   elegidas[p.id] = sel.value;
   const op = opcionElegida(p);
-  const card = document.getElementById(`producto-${p.id}`);
-  const texto = card.querySelector("[data-opcion-texto]");
-  if (texto) texto.textContent = op.texto || "";
-  card.querySelector(".precio").textContent = precioTexto(op.precio != null ? op.precio : p.precio);
-  // Si la opción elegida (por ejemplo un color de vela) tiene foto propia, se muestra;
-  // si no, vuelve la foto general del producto.
-  const img = card.querySelector(".producto-foto img");
-  if (img && p.foto) {
-    img.src = op.foto || p.foto;
-    img.alt = op.foto ? `${p.nombre} (${op.nombre})` : p.nombre;
-  }
+  // Actualiza la tarjeta de la grilla y, si está abierta, la vista ampliada
+  document.querySelectorAll(`.producto[data-producto="${p.id}"]`).forEach((card) => {
+    const s = card.querySelector("[data-opcion]");
+    if (s && s !== sel) s.value = sel.value;
+    const texto = card.querySelector("[data-opcion-texto]");
+    if (texto) texto.textContent = op.texto || "";
+    card.querySelector(".precio").textContent = precioTexto(op.precio != null ? op.precio : p.precio);
+    // Si la opción elegida (por ejemplo un color de vela) tiene foto propia, se muestra;
+    // si no, vuelve la foto general del producto.
+    const img = card.querySelector(".producto-foto img");
+    if (img && p.foto) {
+      img.src = op.foto || p.foto;
+      img.alt = op.foto ? `${p.nombre} (${op.nombre})` : p.nombre;
+    }
+  });
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") abrirPedido(false);
+  if (e.key === "Escape") { const abierto = modalAbierto(); if (abierto) abrirModal(abierto.id, false); }
   atraparFoco(e);
 });
 document.getElementById("pedido").addEventListener("click", (e) => { if (e.target.id === "pedido") abrirPedido(false); });
+document.getElementById("detalle").addEventListener("click", (e) => { if (e.target.id === "detalle") abrirDetalle(false); });
 
 function renderSobreMi() {
   if (typeof SOBRE_MI === "undefined") return document.getElementById("sobre-mi").remove();
