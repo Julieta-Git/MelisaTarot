@@ -30,12 +30,11 @@ const SITIO = {
 const SOBRE_MI = {
   titulo: "Hola, soy Melisa",
   foto: "assets/fotos/melisa.webp",   // foto de Melisa con la carta (13/11/2026, recortada y sin el logo de la esquina)
-  // Texto revisado por Julieta (13/11/2026).
+  // Texto de Melisa, enviado por Julieta (13/11/2026).
   texto: [
-    "Tu tarotista de confianza ✨🕯️",
-    "Leo Tarot y Sibilla, y enseño ambos también. Tengo 24 años y además soy coach ontológica.",
-    "Uso las cartas para ayudarte a mirar con claridad lo que estás viviendo, entender qué te pasa y animarte a dar el próximo paso. Hago lecturas por audio, con fotos de tus cartas, y sesiones por videollamada.",
-    "Si querés aprender, en mi curso te enseño a leer el tarot desde cero. Y cada producto de la tienda lo armo a mano, con cristales, aromas e intención.",
+    "Soy tarotista y docente del Rider y Sibilla Italiana, con más de 6 años de experiencia y formación en Coaching Ontológico.",
+    "En mi trabajo combino el enfoque predictivo de la Sibilla Italiana con la mirada reflexiva del Tarot Rider-Waite, ofreciendo lecturas que integran interpretación, autoconocimiento y nuevas perspectivas.",
+    "A través de mis sesiones y formaciones, comparto mi pasión por el Tarot. También encontrarás productos artesanales, elaborados por mí con amor e intención, para acompañar y enriquecer tu propio camino.",
   ],
 };
 
