@@ -79,6 +79,8 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Tienda */
 .filtros { display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.4rem; scrollbar-width: none; }
+.tienda .filtros { position: sticky; top: var(--alto-header, 54px); z-index: 10; background: var(--crema); padding: 0.6rem 0; margin-left: -4px; margin-right: -4px; padding-left: 4px; padding-right: 4px; mask-image: linear-gradient(90deg, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); }
+@media (min-width: 900px) { .tienda .filtros { mask-image: none; -webkit-mask-image: none; } }
 .filtros::-webkit-scrollbar { display: none; }
 @media (min-width: 900px) { .filtros { flex-wrap: wrap; justify-content: center; } }
 .filtros button { flex: none; min-height: 44px; padding: 0.4rem 1.1rem; border: 1.5px solid var(--tinta); border-radius: 99px; background: transparent; color: var(--tinta); font: 500 0.93rem "Inter", sans-serif; cursor: pointer; }
@@ -169,7 +171,7 @@ img { max-width: 100%; height: auto; display: block; }
 .tiradas .encabezado p:not(.etiqueta) { color: rgba(251, 246, 238, 0.75); }
 .filtros-oscuros button { border-color: rgba(218, 196, 115, 0.5); color: var(--crema); }
 .filtros-oscuros button[aria-pressed="true"] { background: var(--dorado); border-color: var(--dorado); color: var(--bordo); }
-.grilla-tiradas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); margin-top: 2rem; align-items: start; }
+.grilla-tiradas { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); margin-top: 2rem; align-items: stretch; }
 .tirada { display: flex; flex-direction: column; padding: 1.5rem; border: 1px solid rgba(218, 196, 115, 0.28); border-radius: var(--radio); background: linear-gradient(165deg, var(--bordo-2), var(--bordo)); }
 .tirada.destacada { border-color: var(--dorado); box-shadow: 0 0 0 1px var(--dorado) inset; }
 .tirada-col { margin: 0 0 0.4rem; color: var(--dorado); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; }
@@ -239,3 +241,32 @@ main:focus { outline: none; }
 .pedido-ayuda p { margin: 0 0 0.6rem; font-weight: 600; }
 .pedido-ayuda-acciones { display: flex; flex-wrap: wrap; gap: 0.6rem; }
 .btn-borde-oscuro { min-height: 44px; padding: 0.4rem 1.1rem; background: transparent; border-color: var(--bordo); color: var(--bordo); font-size: 0.95rem; }
+
+/* Tiradas: texto recortado con "Leer más" */
+.tirada-texto.recortado > p:first-child { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.leer-mas { align-self: flex-start; min-height: 44px; padding: 0; border: 0; background: none; color: var(--dorado); font: 600 0.9rem "Inter", sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+
+/* Tarjeta de producto: "Ver más" */
+.producto-mas summary { list-style: none; display: flex; align-items: center; gap: 0.4rem; min-height: 40px; cursor: pointer; color: var(--bordo); font-weight: 600; font-size: 0.88rem; }
+.producto-mas summary::-webkit-details-marker { display: none; }
+.producto-mas summary::before { content: "▸"; transition: transform 0.2s; }
+.producto-mas[open] summary::before { transform: rotate(90deg); }
+@media (min-width: 700px) { .producto-mas summary { display: none; } }
+
+/* Celu: tienda en 2 columnas */
+@media (max-width: 699px) {
+  .grilla-productos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+  .producto-foto img { inset: 0.5rem; width: calc(100% - 1rem); height: calc(100% - 1rem); }
+  .producto-info { padding: 0.8rem 0.8rem 0.9rem; }
+  .producto-info h4 { font-size: 1.02rem; }
+  .producto-info h4 small { font-size: 0.78rem; }
+  .chips { margin-bottom: 0.4rem; }
+  .chips li { font-size: 0.7rem; padding: 0.05rem 0.45rem; }
+  .descripcion, .incluye, .ideal { font-size: 0.85rem; }
+  .opcion { font-size: 0.8rem; }
+  .opcion-texto { font-size: 0.8rem; }
+  .producto-pie { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+  .btn-agregar { width: 100%; padding: 0.4rem 0.6rem; font-size: 0.9rem; }
+  .badge { top: 0.5rem; left: 0.5rem; font-size: 0.68rem; padding: 0.15rem 0.5rem; }
+  .grupo-encabezado h3 { font-size: 1.4rem; }
+}

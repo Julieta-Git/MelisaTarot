@@ -113,7 +113,8 @@ function renderTiradas() {
         <p class="tirada-col">${esc(coleccion(t.coleccion).nombre)}</p>
         <h3>${esc(t.nombre)}</h3>
         ${t.detalle ? `<p class="tirada-detalle">${esc(t.detalle)}</p>` : ""}
-        <div class="tirada-texto">${textoConLista(t.descripcion)}</div>
+        <div class="tirada-texto recortado">${textoConLista(t.descripcion)}</div>
+        <button type="button" class="leer-mas" data-leer-mas aria-expanded="false" hidden>Leer más</button>
         <div class="tirada-pie">
           <p class="precio">${precioTexto(t.precio)}</p>
           <button type="button" class="btn btn-reservar" data-tirada="${esc(t.id)}" aria-label="Reservar ${esc(t.nombre)} por WhatsApp">Reservar</button>
@@ -129,6 +130,15 @@ function renderTiradas() {
           <button type="button" class="btn-mini" data-tirada="${esc(t.id)}" aria-label="Reservar ${esc(t.nombre)} por WhatsApp">Reservar</button></li>`).join("")}
         </ul>
       </article>` : "");
+}
+
+// Muestra "Leer más" solo en las tiradas cuyo texto quedó recortado
+function marcarRecortes() {
+  document.querySelectorAll("#grilla-tiradas .tirada-texto.recortado").forEach((el) => {
+    const boton = el.nextElementSibling;
+    const parrafo = el.querySelector("p");
+    if (boton && parrafo && boton.matches("[data-leer-mas]")) boton.hidden = parrafo.scrollHeight <= parrafo.clientHeight + 4;
+  });
 }
 
 function renderServicios() {
@@ -149,7 +159,8 @@ function renderServicios() {
 if (!SITIO.mostrarTiradas || !TIRADAS.length) {
   document.querySelectorAll("[data-tiradas]").forEach((el) => el.remove());
 } else {
-  seguro("tiradas", renderTiradas);
+  seguro("tiradas", () => { renderTiradas(); requestAnimationFrame(marcarRecortes); });
+  addEventListener("resize", () => { clearTimeout(marcarRecortes.t); marcarRecortes.t = setTimeout(marcarRecortes, 200); });
   seguro("curso y eventos", renderServicios);
 }
 
@@ -180,6 +191,10 @@ function opcionElegida(p) {
   return p.opciones.valores.find((v) => v.nombre === elegidas[p.id]) || p.opciones.valores[0];
 }
 
+// En pantallas anchas la descripción se ve abierta; en el celu queda en "Ver más".
+const tarjetasAbiertas = () => matchMedia("(min-width: 700px)").matches;
+const RITUALES = ["vela", "aceite", "biosahumerio"];
+
 function tarjeta(p) {
   const chips = [p.aroma && `Aroma ${p.aroma}`, p.ml, p.chakra && `Chakra ${p.chakra}`, p.detalle].filter(Boolean);
   const op = opcionElegida(p);
@@ -198,9 +213,12 @@ function tarjeta(p) {
       ${chips.length ? `<ul class="chips">${chips.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
       ${p.ml === null ? `<p>${PENDIENTE("Tamaño a confirmar")}</p>` : ""}
       ${p.incluye ? `<p class="incluye"><strong>Incluye:</strong> ${p.incluye.map(esc).join(" + ")}</p>` : ""}
-      <p class="descripcion">${esc(p.descripcion)}</p>
-      ${p.beneficios ? `<p class="beneficios">${p.beneficios.map(esc).join(" · ")}</p>` : ""}
-      ${p.ideal ? `<p class="ideal">${esc(p.ideal)}</p>` : ""}
+      <details class="producto-mas"${tarjetasAbiertas() ? " open" : ""}>
+        <summary>Ver más</summary>
+        <p class="descripcion">${esc(p.descripcion)}</p>
+        ${p.beneficios ? `<p class="beneficios">${p.beneficios.map(esc).join(" · ")}</p>` : ""}
+        ${p.ideal ? `<p class="ideal">${esc(p.ideal)}</p>` : ""}
+      </details>
       ${p.opciones ? `
         <label class="opcion">${esc(p.opciones.titulo)}
           <select data-opcion="${esc(p.id)}">
@@ -225,7 +243,8 @@ function renderProductos() {
   let html = "";
   const grupos = [];
   lista.forEach((p) => {
-    const clave = filtro.tipo === "intencion" ? "_" : (p.linea || p.categoria);
+    const todos = filtro.tipo === "categoria" && filtro.valor === "todos";
+    const clave = filtro.tipo === "intencion" ? "_" : (p.linea || (todos && RITUALES.includes(p.categoria) ? "rituales" : p.categoria));
     let g = grupos.find((x) => x.clave === clave);
     if (!g) grupos.push((g = { clave, items: [] }));
     g.items.push(p);
@@ -236,7 +255,7 @@ function renderProductos() {
     const intencion = INTENCIONES.find((i) => i.id === filtro.valor);
     const titulo = filtro.tipo === "intencion"
       ? (intencion ? intencion.texto : "")
-      : linea ? linea.nombre : cat ? cat.nombre : "";
+      : linea ? linea.nombre : g.clave === "rituales" ? "Rituales: velas, aceites y sahumos" : cat ? cat.nombre : "";
     let tarjetas = "";
     g.items.forEach((p) => {
       try { tarjetas += tarjeta(p); } catch (err) { console.error(`[Melisa Tarot] No se pudo mostrar el producto "${p.id}". Revisá data.js.`, err); }
@@ -394,7 +413,13 @@ document.addEventListener("click", (e) => {
   }
   if (d.mas) { pedido[d.mas]++; renderPedido(); }
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
-  if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); }
+  if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); marcarRecortes(); }
+  if ("leerMas" in d) {
+    const texto = b.previousElementSibling;
+    const abierto = texto.classList.toggle("recortado") === false;
+    b.textContent = abierto ? "Leer menos" : "Leer más";
+    b.setAttribute("aria-expanded", String(abierto));
+  }
   if (d.tirada) {
     const t = TIRADAS.find((x) => x.id === d.tirada);
     abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?\n\nMi nombre: \nTema o pregunta: `);
