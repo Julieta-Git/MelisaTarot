@@ -29,7 +29,7 @@ const SITIO = {
 // texto: lista de párrafos. Lo que está en null muestra "A confirmar".
 const SOBRE_MI = {
   titulo: "Hola, soy Melisa",
-  foto: null,   // pendiente: foto de Melisa con la carta (se agrega desde la compu de Julieta)
+  foto: "assets/fotos/melisa.webp",   // foto de Melisa con la carta (13/11/2026, recortada y sin el logo de la esquina)
   // Texto armado a partir de lo que dijo Julieta (12/11/2026): falta que Melisa lo apruebe.
   texto: [
     "Soy tu tarotista de confianza: leo tarot y Sibilla, y enseño tarot. Tengo 24 años y también soy coach ontológica.",
