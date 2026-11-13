@@ -355,7 +355,7 @@ const PREGUNTAS = [
   { pregunta: "¿Cómo reservo una lectura?", respuesta: "Tocá «Reservar» en la lectura que quieras y se abre WhatsApp con el pedido escrito. Ahí coordinamos día y horario." },
   { pregunta: "¿Cómo recibo mi lectura?", respuesta: "Las lecturas se hacen por audio, con fotos de las cartas. La extensión depende de cada lectura y de cuántas preguntas tenga: suele llevar entre 40 minutos y una hora." },
   { pregunta: "¿Cómo son las videollamadas?", respuesta: "Las videollamadas (como la Sesión Personalizada) se coordinan por WhatsApp." },
-  { pregunta: "¿Cómo pago?", respuesta: "Por transferencia al alias Melisatarot.mp, a nombre de Ximena Melisa Perez, o por Rapipago. Por favor, recordá mandar tu comprobante. 🤍" },
+  { pregunta: "¿Cómo pago?", respuesta: "Por transferencia al alias Melisatarot.mp, a nombre de Ximena Melisa Perez, o por Rapipago. Por favor, recordá mandar tu comprobante. 🤍 Las lecturas también se pueden pagar con un trueque: un servicio, producto o algo que quieras intercambiar (mirá la sección Trueque mágico)." },
   { pregunta: "¿Hacen envíos?", respuesta: null },
   { pregunta: "¿Puedo retirar en persona?", respuesta: null },
   { pregunta: "¿Siempre hay todos los aromas?", respuesta: "Los productos y los aromas pueden variar según la disponibilidad. Consultá antes de pedir." },

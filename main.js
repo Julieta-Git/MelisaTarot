@@ -476,6 +476,7 @@ document.addEventListener("click", (e) => {
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
   if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); marcarRecortes(); }
   if (d.ver) verProducto(d.ver);
+  if ("trueque" in d) abrirWhatsApp("¡Hola Melisa! Me interesa el Trueque mágico. Te cuento qué te puedo ofrecer: \n\nY me gustaría la lectura: \n\nMi nombre: ");
   if ("consulta" in d) abrirWhatsApp("¡Hola Melisa! Quiero hacerte una consulta. ¿Qué horarios tenés disponibles hoy?\n\nMi nombre: ");
   if (d.irFoto) {
     const card = b.closest(".producto");
