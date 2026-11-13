@@ -2,7 +2,7 @@
 
 Sitio estático (HTML, CSS y JS) para las tiradas de tarot y la tienda holística de Melisa. Los pedidos se cierran por WhatsApp.
 
-**Estado:** en desarrollo, con los datos reales del catálogo PDF y del catálogo de WhatsApp de Melisa. Lo pendiente está en `docs/proyecto.md`. Todavía no se publica.
+**Estado:** en desarrollo, con los datos reales del catálogo PDF y del catálogo de WhatsApp de Melisa. Lo pendiente está en `docs/proyecto.md`. Publicado en https://melisatarot.vercel.app.
 
 ## Cómo editar
 Todo el contenido está en **`data.js`**: marca, WhatsApp, Instagram, tiradas, productos y preguntas frecuentes.
@@ -17,9 +17,9 @@ Todo el contenido está en **`data.js`**: marca, WhatsApp, Instagram, tiradas, p
 Abrir `index.html` en el navegador. No necesita instalar nada.
 
 ## Publicar
-GitHub Pages desde la rama `main` (Settings → Pages → Deploy from a branch → main / root).
+Publicado en Vercel (conectado a este repo): https://melisatarot.vercel.app. Cada push a `main` se publica solo.
 
-Al publicar, en `index.html` cambiar `og:image` por la URL completa (por ejemplo `https://dominio/assets/og-melisa-tarot.jpg`) y sumar `og:url` y `<link rel="canonical">`, para que la vista previa al compartir por WhatsApp e Instagram salga con imagen.
+Si cambia el dominio, actualizar en `index.html` el canonical, `og:url`, `og:image` y el JSON-LD.
 
 ## Documentación
 Requisitos, pendientes, criterios de aceptación y registro de decisiones en [`docs/proyecto.md`](docs/proyecto.md).
