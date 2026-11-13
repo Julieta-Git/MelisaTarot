@@ -222,7 +222,11 @@ const PRODUCTOS = [
 
   // ---------- MAZOS DE TAROT (del catálogo de WhatsApp; sin foto todavía) ----------
   { id: "mazo-rider-waite", nombre: "Mazo Rider-Waite", categoria: "mazo", precio: 15000, foto: null,
-    descripcion: "Mazo de tarot Rider-Waite." /* el catálogo no trae descripción — A CONFIRMAR */ },
+    descripcion: "Mazo de tarot Rider-Waite.", /* el catálogo no trae descripción — A CONFIRMAR */
+    opciones: { titulo: "Presentación", valores: [
+      { nombre: "Sin manual personalizado" },
+      { nombre: "Con manual personalizado", precio: 33999 }, // confirmado por Julieta 13/11/2026
+    ] } },
   { id: "mazo-sibilla", nombre: "Sibilla Italiana", categoria: "mazo", precio: 24000, foto: null,
     descripcion: "Mazo de cartas Sibilla Italiana.",
     opciones: { titulo: "Presentación", valores: [
