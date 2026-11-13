@@ -32,9 +32,9 @@ const SOBRE_MI = {
   foto: "assets/fotos/melisa.webp",   // foto de Melisa con la carta (13/11/2026, recortada y sin el logo de la esquina)
   // Texto de Melisa, enviado por Julieta (13/11/2026).
   texto: [
-    "Soy tarotista y docente del Rider y Sibilla Italiana, con más de 6 años de experiencia y formación en Coaching Ontológico.",
-    "En mi trabajo combino el enfoque predictivo de la Sibilla Italiana con la mirada reflexiva del Tarot Rider-Waite, ofreciendo lecturas que integran interpretación, autoconocimiento y nuevas perspectivas.",
-    "A través de mis sesiones y formaciones, comparto mi pasión por el Tarot. También encontrarás productos artesanales, elaborados por mí con amor e intención, para acompañar y enriquecer tu propio camino.",
+    "Soy tarotista, docente del Rider y Sibilla Italiana, con más de 6 años de experiencia. Cuento además con formación en Coaching Ontológico.",
+    "Mi trabajo combina el enfoque predictivo de la Sibilla Italiana con la mirada reflexiva del Tarot Rider-Waite. Así, mis lecturas integran interpretación, autoconocimiento y nuevas perspectivas.",
+    "A través de mis sesiones y formaciones comparto mi pasión por el Tarot. También encontrarás productos artesanales, elaborados por mí con amor e intención, para acompañar y enriquecer tu propio camino.",
   ],
 };
 
