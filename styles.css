@@ -118,7 +118,7 @@ img { max-width: 100%; height: auto; display: block; }
 .como-pedir { background: var(--bordo); color: var(--crema); }
 .como-pedir .etiqueta { color: var(--dorado); }
 .pasos { list-style: none; counter-reset: paso; padding: 0; display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
-.pasos li { counter-increment: paso; border: 1px solid rgba(218, 196, 115, 0.35); border-radius: var(--radio); padding: 1.4rem; }
+.pasos li { display: flex; flex-direction: column; align-items: flex-start; counter-increment: paso; border: 1px solid rgba(218, 196, 115, 0.35); border-radius: var(--radio); padding: 1.4rem; }
 .pasos li::before { content: counter(paso); display: grid; place-items: center; width: 40px; height: 40px; margin-bottom: 0.7rem; border-radius: 50%; background: var(--dorado); color: var(--bordo); font: 700 1.2rem "Playfair Display", serif; }
 .aviso { text-align: center; margin-top: 1.8rem; opacity: 0.8; font-size: 0.9rem; }
 
@@ -318,3 +318,8 @@ main:focus { outline: none; }
 .galeria-puntos button { width: 28px; height: 28px; padding: 0; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; }
 .galeria-puntos button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: rgba(40, 1, 0, 0.3); box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8); transition: background 0.2s, transform 0.2s; }
 .galeria-puntos button[aria-current]::before { background: var(--bordo); transform: scale(1.2); }
+
+.etiqueta-grande { font-size: 1.15rem; letter-spacing: 0.16em; }
+.como-pedir h2 { font-size: clamp(2.2rem, 6vw, 3.3rem); }
+.btn-paso { width: auto; margin-top: auto; padding-top: 0.6rem; min-height: 48px; }
+.pasos li .btn-paso { margin-top: 1rem; }

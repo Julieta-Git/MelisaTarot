@@ -476,6 +476,7 @@ document.addEventListener("click", (e) => {
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
   if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); marcarRecortes(); }
   if (d.ver) verProducto(d.ver);
+  if ("consulta" in d) abrirWhatsApp("¡Hola Melisa! Quiero hacerte una consulta. ¿Qué horarios tenés disponibles hoy?\n\nMi nombre: ");
   if (d.irFoto) {
     const card = b.closest(".producto");
     const slide = card.querySelectorAll(".galeria img")[+d.irFoto];
@@ -485,7 +486,7 @@ document.addEventListener("click", (e) => {
   if (b.id === "cerrar-detalle") abrirDetalle(false);
   if (d.tirada) {
     const t = TIRADAS.find((x) => x.id === d.tirada);
-    abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué días tenés disponibles?\n\nMi nombre: \nTema o pregunta: `);
+    abrirWhatsApp(`¡Hola Melisa! Quiero reservar la lectura «${t.nombre}» (${precioTexto(t.precio)}). ¿Qué horarios tenés disponibles hoy?\n\nMi nombre: \nTema o pregunta: `);
   }
   if (d.servicio) {
     const sv = SERVICIOS.find((x) => x.id === d.servicio);
