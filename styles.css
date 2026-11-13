@@ -273,3 +273,4 @@ main:focus { outline: none; }
 
 .tirada-top { display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.5rem; border-radius: 99px; background: var(--dorado); color: var(--bordo); letter-spacing: 0.06em; }
 .tirada-texto.recortado > p:not(:first-child) { display: none; }
+#sobre-mi-cuerpo p:first-child { font: italic 500 1.3rem "Playfair Display", Georgia, serif; color: var(--tinta); margin-top: 0; }

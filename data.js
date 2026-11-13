@@ -30,9 +30,10 @@ const SITIO = {
 const SOBRE_MI = {
   titulo: "Hola, soy Melisa",
   foto: "assets/fotos/melisa.webp",   // foto de Melisa con la carta (13/11/2026, recortada y sin el logo de la esquina)
-  // Texto armado a partir de lo que dijo Julieta (12/11/2026): falta que Melisa lo apruebe.
+  // Texto revisado por Julieta (13/11/2026).
   texto: [
-    "Soy tu tarotista de confianza: leo tarot y Sibilla, y enseño tarot. Tengo 24 años y también soy coach ontológica.",
+    "Tu tarotista de confianza ✨🕯️",
+    "Leo Tarot y Sibilla, y enseño ambos también. Tengo 24 años y además soy coach ontológica.",
     "Uso las cartas para ayudarte a mirar con claridad lo que estás viviendo, entender qué te pasa y animarte a dar el próximo paso. Hago lecturas por audio, con fotos de tus cartas, y sesiones por videollamada.",
     "Si querés aprender, en mi curso te enseño a leer el tarot desde cero. Y cada producto de la tienda lo armo a mano, con cristales, aromas e intención.",
   ],
