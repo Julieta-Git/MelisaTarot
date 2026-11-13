@@ -227,7 +227,7 @@ main:focus { outline: none; }
 /* Franja de confianza */
 .confianza { background: var(--bordo-2); color: var(--crema); padding: 1.4rem clamp(16px, 5vw, 64px); border-top: 1px solid rgba(218, 196, 115, 0.25); border-bottom: 1px solid rgba(218, 196, 115, 0.25); }
 .confianza-lista { list-style: none; margin: 0 auto; padding: 0; max-width: 1180px; display: grid; gap: 1rem 1.5rem; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.confianza-lista li { display: grid; grid-template-columns: auto 1fr; column-gap: 0.7rem; align-items: start; }
+.confianza-lista li { display: grid; gap: 0.1rem; padding-left: 0.9rem; border-left: 2px solid var(--dorado); }
 .confianza-icono { grid-row: span 2; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(218, 196, 115, 0.5); color: var(--dorado); font-size: 1rem; }
 .confianza-lista strong { font-weight: 600; font-size: 0.95rem; }
 .confianza-lista span:not(.confianza-icono) { font-size: 0.85rem; color: rgba(251, 246, 238, 0.75); }
