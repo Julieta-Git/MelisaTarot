@@ -189,7 +189,10 @@ function renderFiltros() {
 
 function opcionElegida(p) {
   if (!p.opciones) return null;
-  return p.opciones.valores.find((v) => v.nombre === elegidas[p.id]) || p.opciones.valores[0];
+  // Sin elección: la opción que corresponde a la foto principal (si hay), si no la primera
+  return p.opciones.valores.find((v) => v.nombre === elegidas[p.id])
+    || p.opciones.valores.find((v) => v.foto && v.foto === p.foto)
+    || p.opciones.valores[0];
 }
 
 // En pantallas anchas la descripción se ve abierta; en el celu queda en "Ver más".
@@ -201,13 +204,21 @@ function tarjeta(p, grande = false) {
   const op = opcionElegida(p);
   const foto = (op && op.foto) || p.foto;
   const precio = op && op.precio != null ? op.precio : p.precio;
+  // Opciones con foto propia (ej. colores de vela): se muestran como fotos deslizables
+  const galeria = p.opciones ? p.opciones.valores.filter((v, i, arr) => v.foto && arr.findIndex((x) => x.foto === v.foto) === i) : [];
+  galeria.sort((a, b) => (b.foto === p.foto) - (a.foto === p.foto)); // la foto principal primero
   return `
   <article class="producto${grande ? " producto-grande" : ""}"${grande ? "" : ` id="producto-${esc(p.id)}"`} data-producto="${esc(p.id)}">
     <div class="producto-foto">
+      ${galeria.length > 1 ? `
+      <div class="galeria" data-galeria="${esc(p.id)}" tabindex="0" aria-label="Fotos de ${esc(p.nombre)}: deslizá para ver los colores">
+        ${galeria.map((v) => `<img src="${esc(v.foto)}" alt="${esc(`${p.nombre} (${v.nombre})`)}" data-op="${esc(v.nombre)}" ${grande ? "" : 'loading="lazy"'}>`).join("")}
+      </div>
+      <div class="galeria-puntos">${galeria.map((v, i) => `<button type="button" data-ir-foto="${i}" aria-label="Ver ${esc(v.nombre)}"${v === op || (!galeria.includes(op) && i === 0) ? ' aria-current="true"' : ""}></button>`).join("")}</div>` : `
       ${grande ? "" : `<button type="button" class="ver-detalle" data-ver="${esc(p.id)}" aria-label="Ver ${esc(p.nombre)} en grande"></button>`}
       ${foto
         ? `<img src="${esc(foto)}" alt="${esc(p.nombre + (op && op.foto ? ` (${op.nombre})` : ""))}" ${grande ? "" : 'loading="lazy" '}onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'sin-foto',textContent:'Foto próximamente'}))">`
-        : `<span class="sin-foto">Foto próximamente</span>`}
+        : `<span class="sin-foto">Foto próximamente</span>`}`}
       ${p.masVendido ? '<span class="badge">★ Más vendido</span>' : ""}
     </div>
     <div class="producto-info">
@@ -269,6 +280,7 @@ function renderProductos() {
   });
   document.getElementById("productos").innerHTML = html || '<p class="vacio">No hay productos en esta categoría.</p>';
   document.getElementById("quitar-intencion").hidden = filtro.tipo !== "intencion";
+  requestAnimationFrame(() => sincronizarGalerias(document.getElementById("productos")));
 }
 
 function lineasPedido() {
@@ -383,6 +395,7 @@ function verProducto(id) {
   if (!p) return;
   document.getElementById("detalle-cuerpo").innerHTML = tarjeta(p, true);
   abrirDetalle(true);
+  requestAnimationFrame(() => sincronizarGalerias(document.getElementById("detalle")));
 }
 
 function verTirada(id) {
@@ -463,6 +476,11 @@ document.addEventListener("click", (e) => {
   if (d.menos) { pedido[d.menos] = Math.max(0, pedido[d.menos] - 1); renderPedido(); }
   if (d.filtroTirada) { filtroTiradas = d.filtroTirada; renderTiradas(); marcarRecortes(); }
   if (d.ver) verProducto(d.ver);
+  if (d.irFoto) {
+    const card = b.closest(".producto");
+    const slide = card.querySelectorAll(".galeria img")[+d.irFoto];
+    if (slide) aplicarOpcion(PRODUCTOS.find((x) => x.id === card.dataset.producto), slide.dataset.op);
+  }
   if (d.verTirada) verTirada(d.verTirada);
   if (b.id === "cerrar-detalle") abrirDetalle(false);
   if (d.tirada) {
@@ -481,16 +499,37 @@ document.addEventListener("click", (e) => {
   if (b.id === "pedido-copiar") copiarPedido();
 });
 
-document.addEventListener("change", (e) => {
-  const sel = e.target.closest("[data-opcion]");
-  if (!sel) return;
-  const p = PRODUCTOS.find((x) => x.id === sel.dataset.opcion);
-  elegidas[p.id] = sel.value;
+// Aplica la opción elegida en la tarjeta de la grilla y, si está abierta, en la vista ampliada.
+// desdeGaleria: la eligieron deslizando la foto (no hace falta mover la galería).
+// Pone cada galería en la foto de la opción elegida (sin animación)
+function sincronizarGalerias(raiz = document) {
+  raiz.querySelectorAll(".galeria").forEach((gal) => {
+    const p = PRODUCTOS.find((x) => x.id === gal.dataset.galeria);
+    const op = p && opcionElegida(p);
+    const i = op ? [...gal.querySelectorAll("img")].findIndex((im) => im.dataset.op === op.nombre) : -1;
+    if (i > 0) gal.scrollLeft = i * gal.clientWidth;
+  });
+}
+
+function aplicarOpcion(p, nombre, desdeGaleria = false) {
+  elegidas[p.id] = nombre;
   const op = opcionElegida(p);
-  // Actualiza la tarjeta de la grilla y, si está abierta, la vista ampliada
   document.querySelectorAll(`.producto[data-producto="${p.id}"]`).forEach((card) => {
     const s = card.querySelector("[data-opcion]");
-    if (s && s !== sel) s.value = sel.value;
+    if (s) s.value = op.nombre;
+    const gal = card.querySelector(".galeria");
+    if (gal) {
+      const slides = [...gal.querySelectorAll("img")];
+      const i = slides.findIndex((im) => im.dataset.op === op.nombre);
+      if (i >= 0) {
+        if (!desdeGaleria || gal !== desdeGaleria) gal.scrollTo({ left: i * gal.clientWidth, behavior: reducirMovimiento() ? "auto" : "smooth" });
+        card.querySelectorAll("[data-ir-foto]").forEach((b, j) => (j === i ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
+      }
+      const texto = card.querySelector("[data-opcion-texto]");
+      if (texto) texto.textContent = op.texto || "";
+      card.querySelector(".precio").textContent = precioTexto(op.precio != null ? op.precio : p.precio);
+      return;
+    }
     const texto = card.querySelector("[data-opcion-texto]");
     if (texto) texto.textContent = op.texto || "";
     card.querySelector(".precio").textContent = precioTexto(op.precio != null ? op.precio : p.precio);
@@ -502,7 +541,27 @@ document.addEventListener("change", (e) => {
       img.alt = op.foto ? `${p.nombre} (${op.nombre})` : p.nombre;
     }
   });
+}
+
+document.addEventListener("change", (e) => {
+  const sel = e.target.closest("[data-opcion]");
+  if (!sel) return;
+  aplicarOpcion(PRODUCTOS.find((x) => x.id === sel.dataset.opcion), sel.value);
 });
+
+// Deslizar las fotos elige ese color; los puntitos llevan a cada foto
+document.addEventListener("scroll", (e) => {
+  const gal = e.target.closest && e.target.closest(".galeria");
+  if (!gal) return;
+  clearTimeout(gal._t);
+  gal._t = setTimeout(() => {
+    const i = Math.round(gal.scrollLeft / gal.clientWidth);
+    const slide = gal.querySelectorAll("img")[i];
+    const p = PRODUCTOS.find((x) => x.id === gal.dataset.galeria);
+    if (slide && p && elegidas[p.id] !== slide.dataset.op) aplicarOpcion(p, slide.dataset.op, gal);
+    gal.closest(".producto").querySelectorAll("[data-ir-foto]").forEach((b, j) => (j === i ? b.setAttribute("aria-current", "true") : b.removeAttribute("aria-current")));
+  }, 120);
+}, true);
 
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { const abierto = modalAbierto(); if (abierto) abrirModal(abierto.id, false); }
