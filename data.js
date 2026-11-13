@@ -246,6 +246,7 @@ const PRODUCTOS = [
 // Las colecciones marcadas (*) se armaron por afinidad: en el catálogo
 // esos ítems figuran solo en "Todos los artículos" — A CONFIRMAR.
 // Si la descripción tiene "1) ... 2) ..." se muestra como lista.
+// top: true = "Más pedidas" (elegidas por Melisa, 12/11/2026); es el filtro que se ve primero.
 // =====================================================================
 const COLECCIONES_TIRADAS = [
   { id: "nuevas", nombre: "¡Nuevas!" },
@@ -262,21 +263,21 @@ const TIRADAS = [
   // ¡Nuevas!
   { id: "cruz-celta", coleccion: "nuevas", nombre: "Cruz Celta", precio: 20000,
     descripcion: "Lectura clásica del Tarot por excelencia. A través de 10 cartas, analizamos la situación que estás viviendo, siguiendo la estructura celta. La lectura más completa para analizar un tema a profundidad." },
-  { id: "detector-de-mentiras", coleccion: "nuevas", nombre: "Detector de mentiras", precio: 20000,
+  { id: "detector-de-mentiras", top: true, coleccion: "nuevas", nombre: "Detector de mentiras", precio: 20000,
     descripcion: "Una lectura diseñada para revelar las historias que te contás a vos mismo: autoengaños, bloqueos mentales ocultos y verdades que estás necesitando escuchar. Se basa en 5 pilares clave: 1) La fantasía. 2) La realidad. 3) El bloqueo oculto. 4) La verdad incómoda. 5) La medicina / solución. Apta para cualquier tema o situación donde necesites cuestionar tus creencias y tu narrativa actual, accediendo a una visión clara y honesta." },
   { id: "sesion-personalizada", coleccion: "nuevas", nombre: "Sesión Personalizada", precio: 50000, detalle: "Videoconsulta · hasta 80 minutos (+extras)", destacada: true,
     descripcion: "Una experiencia individual y exclusiva, diseñada para quienes buscan un encuentro más profundo. A través de la conversación y el tarot, exploraremos tu situación con calma, claridad y el tiempo necesario para responder cada una de tus dudas." },
 
   // Románticas
-  { id: "casi-algo", coleccion: "romanticas", nombre: "Lectura del Casi Algo", precio: 15000,
+  { id: "casi-algo", top: true, coleccion: "romanticas", nombre: "Lectura del Casi Algo", precio: 15000,
     descripcion: "A partir de 5 preguntas clave, profundizamos en lo que está sucediendo entre vos y tu “casi algo”: 1) ¿Cuáles son sus verdaderas intenciones conmigo? 2) ¿Qué siente y cómo me ve en realidad? 3) ¿Qué lo/la frena a formalizar conmigo? 4) Pregunta libre. 5) Consejo del tarot." },
-  { id: "parejas", coleccion: "romanticas", nombre: "Lectura para parejas", precio: 15000,
+  { id: "parejas", top: true, coleccion: "romanticas", nombre: "Lectura para parejas", precio: 15000,
     descripcion: "A través de 5 preguntas clave, profundizamos en lo que está sucediendo en tu relación y en la dinámica entre ambos: 1) ¿Qué siente por mí realmente en este momento? 2) ¿Qué piensa de nosotros? 3) ¿Qué intenciones tiene a largo plazo? 4) Pregunta libre. 5) Consejo del tarot para fortalecer el vínculo." },
-  { id: "ex-parejas", coleccion: "romanticas", nombre: "Lectura para ex parejas", precio: 15000,
+  { id: "ex-parejas", top: true, coleccion: "romanticas", nombre: "Lectura para ex parejas", precio: 15000,
     descripcion: "A través de 5 preguntas clave, exploramos en profundidad el vínculo con tu ex pareja para comprender qué pasó, qué quedó pendiente y qué lugar ocupa hoy: 1) ¿Qué quedó pendiente entre ambos? 2) ¿Es un cierre definitivo o habrá reconciliación? 3) ¿Qué piensa y siente de nosotros actualmente? 4) Pregunta libre. 5) Consejo del Tarot." },
-  { id: "pretendiente", coleccion: "romanticas", nombre: "Lectura del Pretendiente", precio: 15000,
+  { id: "pretendiente", top: true, coleccion: "romanticas", nombre: "Lectura del Pretendiente", precio: 15000,
     descripcion: "Ideal para explorar la conexión con una persona que te interesa y recién estás conociendo: 1) ¿Qué energía hay entre ustedes? 2) ¿Cómo te percibe esta persona? 3) ¿Cuáles son sus intenciones reales hacia vos? 4) ¿Qué potencial tiene este vínculo? 5) Consejo del Tarot." },
-  { id: "solteros", coleccion: "romanticas", nombre: "Lectura para solteros", precio: 15000,
+  { id: "solteros", top: true, coleccion: "romanticas", nombre: "Lectura para solteros", precio: 15000,
     descripcion: "A través de 5 preguntas clave, exploramos tu presente en el amor: tu energía actual, bloqueos o patrones que pueden estar influyendo, y las oportunidades que se abren para vos en este momento: 1) ¿Cómo me encuentro hoy en el amor? 2) ¿Qué tipo de vínculo estoy atrayendo actualmente? 3) ¿Qué bloqueos o patrones estoy repitiendo? 4) Energía e intenciones de mis pretendientes actuales. 5) Consejo del Tarot." },
 
   // Kármicas
@@ -288,9 +289,9 @@ const TIRADAS = [
     descripcion: "Lectura para reconocer si un vínculo es kármico: 1) ¿De qué vida o experiencia podría venir esto? 2) ¿Hacia dónde nos llevará este karma? 3) ¿Qué aprendizaje trae esta relación a mi vida? 4) Consejo: ¿cómo sanar o equilibrar este vínculo?" },
 
   // Personales
-  { id: "arbol-familiar", coleccion: "personales", nombre: "Árbol Familiar y Sanación de Linaje", precio: 30000, detalle: "Sesión premium en 3 etapas",
+  { id: "arbol-familiar", top: true, coleccion: "personales", nombre: "Árbol Familiar y Sanación de Linaje", precio: 30000, detalle: "Sesión premium en 3 etapas",
     descripcion: "Las cartas te orientan a comprender tu lugar en la familia, a reconocer qué cargas no te corresponden y liberarte de ellas, abriendo nuevos caminos que conecten con vos." },
-  { id: "tarot-evolutivo", coleccion: "personales", nombre: "Tarot Evolutivo", precio: 25000,
+  { id: "tarot-evolutivo", top: true, coleccion: "personales", nombre: "Tarot Evolutivo", precio: 25000,
     descripcion: "Sesión de autoconocimiento diseñada para ayudarte a tomar decisiones alineadas con tu alma y tus deseos. ¿Qué descubriremos? 1) Tu Umbral: la energía raíz de tu pasado y tu presente. 2) El Desafío: el punto ciego o autosabotaje que te mantiene estancado. 3) La Metamorfosis: una desconexión de expectativas ajenas y propias, para alinearte con tus verdaderos deseos y tu “Yo Futuro”. 4) El Impulso: los primeros pasos para acercarme a quién soy." },
   { id: "reflejo-interior", coleccion: "personales", nombre: "Reflejo interior", precio: 25000,
     descripcion: "Una lectura de autoconocimiento para verte con mayor claridad, distinguiendo entre cómo te percibís, cómo te proyectás y qué partes de vos están siendo malinterpretadas o no valoradas: 1) ¿Cómo me veo a mí misma/o hoy? 2) ¿Cómo creo que me perciben los demás? 3) ¿Qué prejuicio o idea sobre mí estoy sosteniendo y no es real? 4) ¿Qué virtudes no estoy viendo en mí? 5) ¿Qué valor o potencial propio estoy subestimando? 6) ¿Cómo empezar a alinearme conmigo y fortalecer mi identidad?" },

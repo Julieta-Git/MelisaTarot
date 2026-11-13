@@ -87,7 +87,7 @@ seguro("pie", () => {
 });
 
 // ---------- Tiradas ----------
-let filtroTiradas = "todas";
+let filtroTiradas = TIRADAS.some((t) => t.top) ? "top" : "todas";
 // "1) texto 2) texto" -> intro + lista
 function textoConLista(t) {
   t = String(t || "");
@@ -102,15 +102,16 @@ function textoConLista(t) {
 
 function renderTiradas() {
   const cols = COLECCIONES_TIRADAS.filter((c) => TIRADAS.some((t) => t.coleccion === c.id));
-  document.getElementById("filtros-tiradas").innerHTML = [{ id: "todas", nombre: "Todas" }, ...cols]
+  const hayTop = TIRADAS.some((t) => t.top && t.visible !== false);
+  document.getElementById("filtros-tiradas").innerHTML = [...(hayTop ? [{ id: "top", nombre: "★ Más pedidas" }] : []), { id: "todas", nombre: "Todas" }, ...cols]
     .map((c) => `<button type="button" data-filtro-tirada="${esc(c.id)}" aria-pressed="${filtroTiradas === c.id}">${esc(c.nombre)}</button>`).join("");
-  const lista = TIRADAS.filter((t) => t.visible !== false && (filtroTiradas === "todas" || t.coleccion === filtroTiradas));
+  const lista = TIRADAS.filter((t) => t.visible !== false && (filtroTiradas === "todas" || (filtroTiradas === "top" ? t.top : t.coleccion === filtroTiradas)));
   const largas = lista.filter((t) => !t.corta);
   const cortas = lista.filter((t) => t.corta);
   document.getElementById("grilla-tiradas").innerHTML =
     largas.map((t) => `
       <article class="tirada${t.destacada ? " destacada" : ""}" id="tirada-${esc(t.id)}">
-        <p class="tirada-col">${esc(coleccion(t.coleccion).nombre)}</p>
+        <p class="tirada-col">${esc(coleccion(t.coleccion).nombre)}${t.top ? ' <span class="tirada-top">★ Más pedida</span>' : ""}</p>
         <h3>${esc(t.nombre)}</h3>
         ${t.detalle ? `<p class="tirada-detalle">${esc(t.detalle)}</p>` : ""}
         <div class="tirada-texto recortado">${textoConLista(t.descripcion)}</div>

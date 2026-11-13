@@ -270,3 +270,6 @@ main:focus { outline: none; }
   .badge { top: 0.5rem; left: 0.5rem; font-size: 0.68rem; padding: 0.15rem 0.5rem; }
   .grupo-encabezado h3 { font-size: 1.4rem; }
 }
+
+.tirada-top { display: inline-block; margin-left: 0.4rem; padding: 0.05rem 0.5rem; border-radius: 99px; background: var(--dorado); color: var(--bordo); letter-spacing: 0.06em; }
+.tirada-texto.recortado > p:not(:first-child) { display: none; }
