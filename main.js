@@ -1,6 +1,6 @@
 const PENDIENTE = (t = "A confirmar") => `<span class="pendiente">${t}</span>`;
 const pesos = (n) => "$" + n.toLocaleString("es-AR");
-const precioTexto = (p) => !SITIO.mostrarPrecios ? "Consultar" : p == null ? "Precio a consultar" : pesos(p);
+const precioTexto = (p) => !SITIO.mostrarPrecios ? "Consultar" : p == null ? "Consultar precio" : pesos(p);
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const categoria = (id) => CATEGORIAS.find((c) => c.id === id) || { id, nombre: id };
 const coleccion = (id) => COLECCIONES_TIRADAS.find((c) => c.id === id) || { id, nombre: "" };
@@ -224,7 +224,6 @@ function tarjeta(p, grande = false) {
     <div class="producto-info">
       <${grande ? 'h2 id="detalle-titulo"' : "h4"}>${esc(p.nombre)}${p.alias ? ` <small>o ${esc(p.alias)}</small>` : ""}</${grande ? "h2" : "h4"}>
       ${chips.length ? `<ul class="chips">${chips.map((c) => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
-      ${p.ml === null ? `<p>${PENDIENTE("Tamaño a confirmar")}</p>` : ""}
       ${p.incluye ? `<p class="incluye"><strong>Incluye:</strong> ${p.incluye.map(esc).join(" + ")}</p>` : ""}
       <details class="producto-mas"${grande || tarjetasAbiertas() ? " open" : ""}>
         <summary>Ver más</summary>
