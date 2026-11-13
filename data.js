@@ -32,9 +32,9 @@ const SOBRE_MI = {
   foto: null,   // pendiente: foto de Melisa con la carta (se agrega desde la compu de Julieta)
   // Texto armado a partir de lo que dijo Julieta (12/11/2026): falta que Melisa lo apruebe.
   texto: [
-    "Soy tu tarotista de confianza. Tengo 24 años y, además de leer el tarot, soy coach ontológica.",
+    "Soy tu tarotista de confianza: leo y enseño tarot. Tengo 24 años y también soy coach ontológica.",
     "Uso las cartas para ayudarte a mirar con claridad lo que estás viviendo, entender qué te pasa y animarte a dar el próximo paso. Hago lecturas por audio, con fotos de tus cartas, y sesiones por videollamada.",
-    "También armo a mano cada producto de la tienda, con cristales, aromas e intención, y enseño a leer el tarot desde cero.",
+    "Si querés aprender, en mi curso te enseño a leer el tarot desde cero. Y cada producto de la tienda lo armo a mano, con cristales, aromas e intención.",
   ],
 };
 
